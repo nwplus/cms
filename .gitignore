@@ -79,6 +79,7 @@ dist
 
 # IDE
 .idea
+.editorconfig
 
 # Service worker
 sw.*
