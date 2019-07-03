@@ -23,25 +23,36 @@ const fireDb = {
     const ref = db.collection(webCollection)
     return (await ref.get()).docs.map(doc => doc.id)
   },
-  addSponsorInformation: async (website, sponsors) => {
-    console.log(sponsors)
+  addSponsorInformation: async (website, sponsor) => {
     const ref = db
       .collection('Website_content')
       .doc(website)
       .collection('Sponsors')
-    for (const sponsor of sponsors) {
-      await ref.add({
-        image: sponsor.image,
-        name: sponsor.name,
-        url: sponsor.url
-      })
-    }
+    await ref.add({
+      image: sponsor.image,
+      name: sponsor.name,
+      url: sponsor.url
+    })
   },
-  uploadImages: async (website, files) => {
+  async uploadImages(website, files) {
+    const failedUploads = []
+
     for (const file of files) {
-      const ref = storage.ref(`${website}/${file.name}`)
-      await ref.put(file)
+      try {
+        const ref = storage.ref(`${website}/${file.name}`)
+        await ref.put(file)
+        await this.addSponsorInformation(website, {
+          image: file.name,
+          name: file.sponsorName.trim(),
+          url: file.url.trim()
+        })
+      } catch (e) {
+        console.log(e)
+        failedUploads.push(file.name)
+      }
     }
+
+    return failedUploads
   }
 }
 
