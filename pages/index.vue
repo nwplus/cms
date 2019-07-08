@@ -74,20 +74,20 @@ export default {
         return
       }
 
-      await firebase.addSponsorInformation(
+      const failedUploads = await firebase.uploadImages(
         this.selectedWebsite,
-        this.files.map(file => {
-          return {
-            image: file.name,
-            name: file.sponsorName.trim(),
-            url: file.url.trim()
-          }
-        })
+        this.files
       )
 
-      await firebase.uploadImages(this.selectedWebsite, this.files)
+      if (failedUploads.length > 0) {
+        let alertString = 'Failed to upload the following files:'
+        for (const file of failedUploads) alertString += `\n${file}`
+        alert(alertString)
+      }
 
-      window.location.reload()
+      this.files = this.files.filter(file => {
+        return failedUploads.includes(file.name)
+      })
     }
   }
 }
