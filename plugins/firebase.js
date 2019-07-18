@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import 'firebase/auth'
 import 'firebase/storage'
 
 if (!firebase.apps.length) {
@@ -14,6 +15,10 @@ if (!firebase.apps.length) {
   }
   firebase.initializeApp(config)
 }
+
+export const auth = firebase.auth()
+auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+
 const db = firebase.firestore()
 const storage = firebase.storage()
 const webCollection = 'Website_content'
