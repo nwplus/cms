@@ -30,7 +30,7 @@ const fireDb = {
   },
   addSponsorInformation: async (website, sponsor) => {
     const ref = db
-      .collection('Website_content')
+      .collection(webCollection)
       .doc(website)
       .collection('Sponsors')
     await ref.add({
@@ -41,7 +41,6 @@ const fireDb = {
   },
   async uploadImages(website, files) {
     const failedUploads = []
-
     for (const file of files) {
       try {
         const ref = storage.ref(`${website}/${file.name}`)
@@ -56,8 +55,29 @@ const fireDb = {
         failedUploads.push(file.name)
       }
     }
-
     return failedUploads
+  },
+  get: async (webDocument, collection) => {
+    if (collection === webDocument) {
+      const ref = db.collection(webCollection).doc(webDocument)
+      const data = await ref.get()
+      return data.data()
+    }
+    const ref = db
+      .collection(webCollection)
+      .doc(webDocument)
+      .collection(collection)
+    return (await ref.get()).docs.map(doc => ({
+      id: doc.id,
+      data: doc.data()
+    }))
+  },
+  update: (webDocument, collection, docId, object) => {
+    db.collection(webCollection)
+      .doc(webDocument)
+      .collection(collection)
+      .doc(docId)
+      .update(object)
   }
 }
 
