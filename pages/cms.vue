@@ -2,10 +2,14 @@
   <div class="sponsor-page">
     <div id="website-select">
       <p>Website</p>
-      <select v-model="selectedWebsite">
-        <option>Please select a website</option>
-        <option v-for="w in websites" :key="w.key" :value="w">{{ w }}</option>
-      </select>
+      <button
+        v-for="w in websites"
+        :key="w.key"
+        :value="w"
+        @click="changeWebsite($event)"
+      >
+        {{ w }}
+      </button>
     </div>
     <div id="files-select">
       <div class="large-12 medium-12 small-12 cell">
@@ -36,30 +40,40 @@
       <br />
       <button @click="save">Save</button>
     </div>
+    <Faq :website="selectedWebsite" :listOfFaq="faq" />
   </div>
 </template>
 
 <script>
 /* eslint-disable no-console,import/no-duplicates */
-
 import firebase from '../plugins/firebase'
 import { auth } from '../plugins/firebase'
-
+import Faq from '~/components/FAQ.vue'
+import fireDb from '~/plugins/firebase'
 export default {
-  components: {},
+  components: {
+    Faq
+  },
   async asyncData({ redirect }) {
     auth.onAuthStateChanged(function(user) {
       if (!user) {
         redirect('/')
       }
     })
+    const listOfWebsites = await firebase.getWebsites()
+    const selectedWebsite = ''
     return {
-      websites: await firebase.getWebsites(),
-      selectedWebsite: 'Please select a website',
-      files: []
+      websites: listOfWebsites,
+      selectedWebsite: selectedWebsite,
+      files: [],
+      faq: []
     }
   },
   methods: {
+    async changeWebsite(e) {
+      this.selectedWebsite = e.target.value
+      this.faq = await fireDb.get(this.selectedWebsite, 'Faq')
+    },
     addFiles() {
       this.$refs.files.click()
     },
@@ -79,18 +93,15 @@ export default {
         alert('Please select a website')
         return
       }
-
       const failedUploads = await firebase.uploadImages(
         this.selectedWebsite,
         this.files
       )
-
       if (failedUploads.length > 0) {
         let alertString = 'Failed to upload the following files:'
         for (const file of failedUploads) alertString += `\n${file}`
         alert(alertString)
       }
-
       window.location.reload(true)
     }
   }
@@ -102,19 +113,15 @@ input[type='file'] {
   position: absolute;
   top: -500px;
 }
-
 #website-select {
   display: flex;
 }
-
 .file-listing {
   display: flex;
 }
-
 #files-hr {
   width: 15vw;
 }
-
 .file {
   width: 10vw;
   white-space: nowrap;
@@ -122,7 +129,6 @@ input[type='file'] {
   text-overflow: ellipsis;
   margin: 0 1vw 0 0;
 }
-
 .remove-file {
   color: red;
   cursor: pointer;
