@@ -50,6 +50,7 @@ import firebase from '../plugins/firebase'
 import { auth } from '../plugins/firebase'
 import Faq from '~/components/FAQ.vue'
 import fireDb from '~/plugins/firebase'
+
 export default {
   components: {
     Faq
