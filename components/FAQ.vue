@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div>
+      <button @click="handleAddition()">Add</button>
+    </div>
     <div v-for="faq in listOfFaq" :key="faq.id">
       <br />
       <input type="checkbox" id="checkbox" v-model="faq.data.selected" />
@@ -13,7 +16,7 @@
       {{ faq.data.answer }}
       <br />
       Timestamp:
-      {{ faq.data.timestamp }}
+      {{ new Date(faq.data.timestamp.toDate()) }}
       <br />
       <button>
         Details
@@ -36,6 +39,7 @@
       <button @click="handleSave()">
         Save
       </button>
+      <button @click="handleRemoval()">Delete</button>
     </div>
   </div>
 </template>
@@ -50,7 +54,6 @@
 <script>
 /* eslint-disable no-console */
 import fireDb from '~/plugins/firebase'
-import firebase from '~/plugins/firebase'
 export default {
   props: {
     website: {
@@ -82,16 +85,35 @@ export default {
       this.data.question = faq.data.question
       this.data.category = faq.data.category
       this.data.answer = faq.data.answer
-      console.log(this.currentFaq)
-      console.log(this.website)
     },
-    async handleSave() {
+    handleSave() {
       const firebaseTimestamp = {
-        timestamp: firebase.firestore.Timestamp.fromDate(new Date())
+        timestamp: fireDb.getTimestamp()
       }
       this.data = { ...this.data, ...firebaseTimestamp }
-      fireDb.update(this.website, 'Faq', this.currentFaq.id, this.data)
-      this.listOfFaq = await fireDb.get(this.website, 'Faq')
+      if (this.currentFaq.id == null) {
+        fireDb.update(this.website, 'Faq', this.currentFaq.id, this.data)
+      } else {
+        fireDb.add(this.website, 'Faq', this.data)
+      }
+      this.editMode = !this.editMode
+      this.refreshData()
+    },
+    handleAddition() {
+      this.editMode = !this.editMode
+      this.data.selected = false
+      this.data.question = 'Sample question'
+      this.data.category = 'Sample category'
+      this.data.answer = 'Sample answer'
+      this.$emit('refreshData')
+    },
+    handleRemoval() {
+      this.editMode = !this.editMode
+      fireDb.delete(this.website, 'Faq', this.currentFaq.id)
+      this.refreshData()
+    },
+    refreshData() {
+      this.$emit('refreshData')
     }
   }
 }

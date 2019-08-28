@@ -22,6 +22,7 @@ export default {
       this.provider = new firebase.auth.GoogleAuthProvider()
       try {
         await auth.signInWithPopup(this.provider)
+        console.log(auth.currentUser.displayName)
         this.$router.push('/cms')
       } catch (e) {
         console.log(e)

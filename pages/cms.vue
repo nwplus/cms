@@ -40,7 +40,11 @@
       <br />
       <button @click="save">Save</button>
     </div>
-    <Faq :website="selectedWebsite" :listOfFaq="faq" />
+    <Faq
+      :website="selectedWebsite"
+      :listOfFaq="faq"
+      @refreshData="refreshData(selectedWebsite)"
+    />
   </div>
 </template>
 
@@ -72,6 +76,10 @@ export default {
   methods: {
     async changeWebsite(e) {
       this.selectedWebsite = e.target.value
+      await this.refreshData()
+    },
+    async refreshData() {
+      // add more lines to pull more if needed
       this.faq = await fireDb.get(this.selectedWebsite, 'Faq')
     },
     addFiles() {

@@ -78,6 +78,24 @@ const fireDb = {
       .collection(collection)
       .doc(docId)
       .update(object)
+  },
+  add: async (webDocument, collection, object) => {
+    const ref = await db
+      .collection(webCollection)
+      .doc(webDocument)
+      .collection(collection)
+      .add(object)
+    return ref.id
+  },
+  delete: (webDocument, collection, docId) => {
+    db.collection(webCollection)
+      .doc(webDocument)
+      .collection(collection)
+      .doc(docId)
+      .delete()
+  },
+  getTimestamp: () => {
+    return firebase.firestore.Timestamp.now()
   }
 }
 
