@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <button @click="handleAddition()">Add</button>
+      <button @click="handleAddition()">Add FAQ</button>
     </div>
     <div v-for="faq in listOfFaq" :key="faq.id">
       <br />
@@ -17,6 +17,9 @@
       <br />
       Timestamp:
       {{ new Date(faq.data.timestamp.toDate()) }}
+      <br />
+      Last edited by:
+      {{ faq.data.user }}
       <br />
       <button>
         Details
@@ -40,6 +43,7 @@
         Save
       </button>
       <button @click="handleRemoval()">Delete</button>
+      <button @click="editMode = !editMode">Exit</button>
     </div>
   </div>
 </template>
@@ -54,6 +58,7 @@
 <script>
 /* eslint-disable no-console */
 import fireDb from '~/plugins/firebase'
+import { auth } from '~/plugins/firebase'
 export default {
   props: {
     website: {
@@ -90,16 +95,20 @@ export default {
       const firebaseTimestamp = {
         timestamp: fireDb.getTimestamp()
       }
-      this.data = { ...this.data, ...firebaseTimestamp }
-      if (this.currentFaq.id == null) {
+      const user = auth.currentUser.displayName
+      this.data = { ...this.data, ...firebaseTimestamp, user }
+      if (this.currentFaq != null && this.currentFaq.id !== undefined) {
+        console.log('updated doc')
         fireDb.update(this.website, 'Faq', this.currentFaq.id, this.data)
       } else {
+        console.log('added new doc')
         fireDb.add(this.website, 'Faq', this.data)
       }
       this.editMode = !this.editMode
       this.refreshData()
     },
     handleAddition() {
+      this.currentFaq = null
       this.editMode = !this.editMode
       this.data.selected = false
       this.data.question = 'Sample question'
@@ -109,7 +118,9 @@ export default {
     },
     handleRemoval() {
       this.editMode = !this.editMode
-      fireDb.delete(this.website, 'Faq', this.currentFaq.id)
+      if (this.currentFaq != null && this.currentFaq.id !== undefined) {
+        fireDb.delete(this.website, 'Faq', this.currentFaq.id)
+      }
       this.refreshData()
     },
     refreshData() {

@@ -80,7 +80,7 @@ export default {
       await this.refreshData()
     },
     async refreshData() {
-      // add more lines to pull more if needed
+      // add more lines to pull more data if needed
       this.faq = await fireDb.get(this.selectedWebsite, 'Faq')
     },
     addFiles() {
