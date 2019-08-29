@@ -98,10 +98,8 @@ export default {
       const user = auth.currentUser.displayName
       this.data = { ...this.data, ...firebaseTimestamp, user }
       if (this.currentFaq != null && this.currentFaq.id !== undefined) {
-        console.log('updated doc')
         fireDb.update(this.website, 'Faq', this.currentFaq.id, this.data)
       } else {
-        console.log('added new doc')
         fireDb.add(this.website, 'Faq', this.data)
       }
       this.editMode = !this.editMode
