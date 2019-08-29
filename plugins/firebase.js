@@ -24,6 +24,16 @@ const storage = firebase.storage()
 const webCollection = 'Website_content'
 
 const fireDb = {
+  isAdmin: async email => {
+    const ref = db.collection('admins')
+    const admins = (await ref.get()).docs
+    for (const admin of admins) {
+      const col = ref.doc(admin.id)
+      const userData = (await col.get()).data()
+      if (userData.email === email) return true
+    }
+    return false
+  },
   getWebsites: async () => {
     const ref = db.collection(webCollection)
     return (await ref.get()).docs.map(doc => doc.id)

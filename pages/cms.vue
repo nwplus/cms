@@ -40,7 +40,6 @@
       <br />
       <button @click="save">Save</button>
     </div>
-    <Faq :website="selectedWebsite" :listOfFaq="faq" />
   </div>
 </template>
 
@@ -49,13 +48,9 @@
 
 import firebase from '../plugins/firebase'
 import { auth } from '../plugins/firebase'
-import Faq from '~/components/FAQ.vue'
 import fireDb from '~/plugins/firebase'
 
 export default {
-  components: {
-    Faq
-  },
   async asyncData({ redirect }) {
     auth.onAuthStateChanged(function(user) {
       if (!user) {
