@@ -9,6 +9,7 @@
 /* eslint-disable no-console */
 import firebase from 'firebase/app'
 import { auth } from '../plugins/firebase'
+import fireDb from '~/plugins/firebase'
 
 export default {
   name: 'Login',
@@ -21,11 +22,16 @@ export default {
     async googleSignIn() {
       this.provider = new firebase.auth.GoogleAuthProvider()
       try {
-        await auth.signInWithPopup(this.provider)
+        const res = await auth.signInWithPopup(this.provider)
+        if (!(await fireDb.isAdmin(res.user.email))) {
+          alert('You are not an admin')
+          return
+        }
         this.$router.push('/cms')
       } catch (e) {
-        console.log(e)
-        if (e.code === 'auth/web-storage-unsupported') {
+        console.log(e.code)
+        if (e.code === 'permission-denied') alert('You are not an admin')
+        else if (e.code === 'auth/web-storage-unsupported') {
           this.error_message = 'Please enable 3rd party cookies'
         }
       }
