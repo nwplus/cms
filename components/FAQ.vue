@@ -82,6 +82,9 @@ export default {
       }
     }
   },
+  mounted() {
+    this.refreshData()
+  },
   methods: {
     handleEdit(faq) {
       this.editMode = !this.editMode

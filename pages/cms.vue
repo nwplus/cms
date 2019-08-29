@@ -99,8 +99,12 @@
 import firebase from 'firebase/app'
 import { auth } from '../plugins/firebase'
 import fireDb from '~/plugins/firebase'
+import Faq from '~/components/FAQ.vue'
 
 export default {
+  components: {
+    Faq
+  },
   async asyncData({ redirect }) {
     auth.onAuthStateChanged(function(user) {
       if (!user) {
