@@ -24,7 +24,8 @@
     "firestore": "^1.1.6",
     "nuxt": "^2.0.0",
     "vue": "latest",
-    "vue-dynamic-select": "^1.0.14"
+    "vue-dynamic-select": "^1.0.14",
+    "vue-textarea-autosize": "^1.0.4"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^0.0.1",
