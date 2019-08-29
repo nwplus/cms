@@ -102,6 +102,9 @@ import fireDb from '~/plugins/firebase'
 import Faq from '~/components/FAQ.vue'
 
 export default {
+  components: {
+    Faq
+  },
   async asyncData({ redirect }) {
     const user = firebase.auth().currentUser
     if (!user || !(await fireDb.isAdmin(user.email))) redirect('/')
