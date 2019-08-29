@@ -37,17 +37,21 @@ const fireDb = {
         .doc(website)
         .get()).data()
       introTexts[website] = {
-        introText: websiteData.IntroText,
-        introSubtext: websiteData.IntroSubtext
+        introText: websiteData.IntroText.toString(),
+        introSubtext: websiteData.IntroSubtext.toString(),
+        introLastEditedBy: websiteData.IntroLastEditedBy || undefined,
+        introLastEditedDate: websiteData.IntroLastEditedDate || undefined
       }
     }
     return introTexts
   },
-  updateIntroText: async (website, introText, introSubtext) => {
+  updateIntroText: async (website, introText, introSubtext, user, date) => {
     const ref = db.collection(webCollection).doc(website)
     await ref.set({
       IntroText: introText,
-      IntroSubtext: introSubtext
+      IntroSubtext: introSubtext,
+      IntroLastEditedBy: user,
+      IntroLastEditedDate: date
     })
   },
   addSponsorInformation: async (website, sponsor) => {

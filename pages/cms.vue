@@ -27,7 +27,24 @@
         <p>{{ introTexts[selectedWebsite].introSubtext }}</p>
       </div>
       <div v-if="editingIntro" class="intro-body">
-        <p>Title</p>
+        <p
+          v-if="
+            introTexts[selectedWebsite].introLastEditedBy &&
+              introTexts[selectedWebsite].introLastEditedBy
+          "
+          class="last-edited-by"
+        >
+          Last Edited By:
+          {{ introTexts[selectedWebsite].introLastEditedBy }} at
+          {{
+            new Date(
+              introTexts[selectedWebsite].introLastEditedDate
+            ).toISOString()
+          }}
+        </p>
+        <div id="title">
+          <p>Title</p>
+        </div>
         <textarea
           v-model="introTexts[selectedWebsite].introText"
           class="intro-input"
@@ -72,9 +89,9 @@
 </template>
 
 <script>
-/* eslint-disable no-console,import/no-duplicates */
+/* eslint-disable no-console,import/no-duplicates,prettier/prettier */
 
-import firebase from '../plugins/firebase'
+import firebase from 'firebase/app'
 import { auth } from '../plugins/firebase'
 import fireDb from '~/plugins/firebase'
 
@@ -85,9 +102,8 @@ export default {
         redirect('/')
       }
     })
-    const listOfWebsites = await firebase.getWebsites()
-    const introTexts = await firebase.getIntroText()
-    console.log(introTexts)
+    const listOfWebsites = await fireDb.getWebsites()
+    const introTexts = await fireDb.getIntroText()
     const selectedWebsite = listOfWebsites[0]
     return {
       websites: listOfWebsites,
@@ -106,10 +122,15 @@ export default {
       this.editingIntro = false
     },
     async saveEditingIntro() {
+      this.introTexts[this.selectedWebsite].introLastEditedBy = firebase.auth().currentUser.email
+      this.introTexts[this.selectedWebsite].introLastEditedDate = Date.now()
+
       await fireDb.updateIntroText(
         this.selectedWebsite,
         this.introTexts[this.selectedWebsite].introText,
-        this.introTexts[this.selectedWebsite].introSubtext
+        this.introTexts[this.selectedWebsite].introSubtext,
+        this.introTexts[this.selectedWebsite].introLastEditedBy,
+        this.introTexts[this.selectedWebsite].introLastEditedDate
       )
       this.stopEditingIntro()
     },
@@ -181,6 +202,10 @@ input[type='file'] {
 .intro-body {
   background-color: #f5f5f5;
   display: block;
+}
+
+.last-edited-by {
+  font-size: 0.75rem;
 }
 
 .intro-input {
