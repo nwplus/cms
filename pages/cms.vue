@@ -46,18 +46,21 @@
 <script>
 /* eslint-disable no-console,import/no-duplicates */
 
-import firebase from '../plugins/firebase'
+import firebase from 'firebase/app'
 import { auth } from '../plugins/firebase'
 import fireDb from '~/plugins/firebase'
 
 export default {
   async asyncData({ redirect }) {
+    const user = firebase.auth().currentUser
+    if (!user || !(await fireDb.isAdmin(user.email))) redirect('/')
+
     auth.onAuthStateChanged(function(user) {
       if (!user) {
         redirect('/')
       }
     })
-    const listOfWebsites = await firebase.getWebsites()
+    const listOfWebsites = await fireDb.getWebsites()
     const selectedWebsite = ''
     return {
       websites: listOfWebsites,
@@ -91,7 +94,7 @@ export default {
         return
       }
 
-      const failedUploads = await firebase.uploadImages(
+      const failedUploads = await fireDb.uploadImages(
         this.selectedWebsite,
         this.files
       )
