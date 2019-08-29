@@ -11,6 +11,34 @@
         {{ w }}
       </button>
     </div>
+    <div id="intro">
+      <div id="intro-header">
+        <p>Intro Text</p>
+        <button v-if="!editingIntro" @click="startEditingIntro">Edit</button>
+        <p v-if="editingIntro" id="intro-cancel" @click="stopEditingIntro">
+          Cancel
+        </p>
+        <p v-if="editingIntro" id="intro-save" @click="saveEditingIntro">
+          Save
+        </p>
+      </div>
+      <div v-if="!editingIntro" class="intro-body">
+        <p>{{ introTexts[selectedWebsite].introText }}</p>
+        <p>{{ introTexts[selectedWebsite].introSubtext }}</p>
+      </div>
+      <div v-if="editingIntro" class="intro-body">
+        <p>Title</p>
+        <textarea
+          v-model="introTexts[selectedWebsite].introText"
+          class="intro-input"
+        />
+        <p>Description</p>
+        <textarea
+          v-model="introTexts[selectedWebsite].introSubtext"
+          class="intro-input"
+        />
+      </div>
+    </div>
     <div id="files-select">
       <div class="large-12 medium-12 small-12 cell">
         <label id="files-label">Images</label>
@@ -40,7 +68,6 @@
       <br />
       <button @click="save">Save</button>
     </div>
-    <Faq :website="selectedWebsite" :listOfFaq="faq" />
   </div>
 </template>
 
@@ -49,13 +76,9 @@
 
 import firebase from '../plugins/firebase'
 import { auth } from '../plugins/firebase'
-import Faq from '~/components/FAQ.vue'
 import fireDb from '~/plugins/firebase'
 
 export default {
-  components: {
-    Faq
-  },
   async asyncData({ redirect }) {
     auth.onAuthStateChanged(function(user) {
       if (!user) {
@@ -63,15 +86,33 @@ export default {
       }
     })
     const listOfWebsites = await firebase.getWebsites()
-    const selectedWebsite = ''
+    const introTexts = await firebase.getIntroText()
+    console.log(introTexts)
+    const selectedWebsite = listOfWebsites[0]
     return {
       websites: listOfWebsites,
+      introTexts: introTexts,
       selectedWebsite: selectedWebsite,
       files: [],
-      faq: []
+      faq: [],
+      editingIntro: false
     }
   },
   methods: {
+    startEditingIntro() {
+      this.editingIntro = true
+    },
+    stopEditingIntro() {
+      this.editingIntro = false
+    },
+    async saveEditingIntro() {
+      await fireDb.updateIntroText(
+        this.selectedWebsite,
+        this.introTexts[this.selectedWebsite].introText,
+        this.introTexts[this.selectedWebsite].introSubtext
+      )
+      this.stopEditingIntro()
+    },
     async changeWebsite(e) {
       this.selectedWebsite = e.target.value
       this.faq = await fireDb.get(this.selectedWebsite, 'Faq')
@@ -120,6 +161,30 @@ input[type='file'] {
 
 #website-select {
   display: flex;
+}
+
+#intro-header {
+  display: flex;
+  background-color: #ededed;
+}
+
+#intro-cancel,
+#intro-save {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+#intro {
+  width: 800px;
+}
+
+.intro-body {
+  background-color: #f5f5f5;
+  display: block;
+}
+
+.intro-input {
+  width: 90%;
 }
 
 .file-listing {

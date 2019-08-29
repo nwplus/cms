@@ -28,6 +28,28 @@ const fireDb = {
     const ref = db.collection(webCollection)
     return (await ref.get()).docs.map(doc => doc.id)
   },
+  getIntroText: async () => {
+    const websites = await fireDb.getWebsites()
+    const introTexts = {}
+    for (const website of websites) {
+      const websiteData = (await db
+        .collection(webCollection)
+        .doc(website)
+        .get()).data()
+      introTexts[website] = {
+        introText: websiteData.IntroText,
+        introSubtext: websiteData.IntroSubtext
+      }
+    }
+    return introTexts
+  },
+  updateIntroText: async (website, introText, introSubtext) => {
+    const ref = db.collection(webCollection).doc(website)
+    await ref.set({
+      IntroText: introText,
+      IntroSubtext: introSubtext
+    })
+  },
   addSponsorInformation: async (website, sponsor) => {
     const ref = db
       .collection(webCollection)
