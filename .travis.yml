@@ -3,9 +3,9 @@ node_js: node
 notifications:
   email: false
 install:
-  - yarn install
+  - npm install
 script:
-  - yarn lint
-  - yarn test
-  - yarn run build
-  - yarn run generate
+  - npm run lint
+  - npm run test
+  - npm run build
+  - npm run generate
