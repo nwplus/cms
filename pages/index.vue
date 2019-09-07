@@ -36,7 +36,6 @@ export default {
         }
         this.$router.push('/cms')
       } catch (e) {
-        console.log(e.code)
         if (e.code === 'permission-denied') alert('You are not an admin')
         else if (e.code === 'auth/web-storage-unsupported') {
           this.error_message = 'Please enable 3rd party cookies'

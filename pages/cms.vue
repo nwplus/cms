@@ -108,7 +108,6 @@ export default {
   },
   async asyncData({ redirect }) {
     auth.onAuthStateChanged(async function(user) {
-      console.log(user)
       if (!user) {
         redirect('/')
       }
