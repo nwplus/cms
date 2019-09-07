@@ -1,5 +1,6 @@
 <template>
   <div class="sponsor-page">
+    <button @click="logout">Logout</button>
     <div id="website-select">
       <p>Website</p>
       <button
@@ -106,13 +107,12 @@ export default {
     Faq
   },
   async asyncData({ redirect }) {
-    const user = firebase.auth().currentUser
-    if (!user || !(await fireDb.isAdmin(user.email))) redirect('/')
-
-    auth.onAuthStateChanged(function(user) {
+    auth.onAuthStateChanged(async function(user) {
+      console.log(user)
       if (!user) {
         redirect('/')
       }
+      if (!(await fireDb.isAdmin(user.email))) redirect('/')
     })
     const listOfWebsites = await fireDb.getWebsites()
     const introTexts = await fireDb.getIntroText()
@@ -127,6 +127,14 @@ export default {
     }
   },
   methods: {
+    async logout() {
+      try {
+        await firebase.auth().signOut()
+        this.$router.push('/')
+      } catch (error) {
+        alert(error)
+      }
+    },
     startEditingIntro() {
       this.editingIntro = true
     },

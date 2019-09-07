@@ -17,10 +17,18 @@ export default {
       error_message: ''
     }
   },
+  asyncData({ redirect }) {
+    auth.onAuthStateChanged(async function(user) {
+      if (user && (await fireDb.isAdmin(user.email))) redirect('/cms')
+    })
+  },
   methods: {
     async googleSignIn() {
       this.provider = new firebase.auth.GoogleAuthProvider()
       try {
+        await firebase
+          .auth()
+          .setPersistence(firebase.auth.Auth.Persistence.SESSION)
         const res = await auth.signInWithPopup(this.provider)
         if (!(await fireDb.isAdmin(res.user.email))) {
           alert('You are not an admin')
