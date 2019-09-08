@@ -71,12 +71,20 @@ const fireDb = {
       try {
         const ref = storage.ref(`${website}/${file.name}`)
         await ref.put(file)
+      } catch (e) {
+        console.log(e)
+        failedUploads.push(file.name)
+      }
+
+      try {
         await this.addSponsorInformation(website, {
           image: file.name,
           name: file.sponsorName.trim(),
           url: file.url.trim()
         })
       } catch (e) {
+        const ref = storage.ref(`${website}/${file.name}`)
+        await ref.delete()
         console.log(e)
         failedUploads.push(file.name)
       }
