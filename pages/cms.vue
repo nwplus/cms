@@ -85,6 +85,11 @@
       <br />
       <button @click="save">Save</button>
     </div>
+    <Faq
+      :website="selectedWebsite"
+      :listOfFaq="faq"
+      @refreshData="refreshData(selectedWebsite)"
+    />
   </div>
 </template>
 
@@ -94,8 +99,12 @@
 import firebase from 'firebase/app'
 import { auth } from '../plugins/firebase'
 import fireDb from '~/plugins/firebase'
+import Faq from '~/components/FAQ.vue'
 
 export default {
+  components: {
+    Faq
+  },
   async asyncData({ redirect }) {
     auth.onAuthStateChanged(function(user) {
       if (!user) {
@@ -136,6 +145,10 @@ export default {
     },
     async changeWebsite(e) {
       this.selectedWebsite = e.target.value
+      await this.refreshData()
+    },
+    async refreshData() {
+      // add more lines to pull more data if needed
       this.faq = await fireDb.get(this.selectedWebsite, 'Faq')
     },
     addFiles() {
@@ -157,12 +170,10 @@ export default {
         alert('Please select a website')
         return
       }
-
       const failedUploads = await firebase.uploadImages(
         this.selectedWebsite,
         this.files
       )
-
       if (failedUploads.length > 0) {
         let alertString = 'Failed to upload the following files:'
         for (const file of failedUploads) alertString += `\n${file}`
@@ -179,7 +190,6 @@ input[type='file'] {
   position: absolute;
   top: -500px;
 }
-
 #website-select {
   display: flex;
 }
@@ -215,11 +225,9 @@ input[type='file'] {
 .file-listing {
   display: flex;
 }
-
 #files-hr {
   width: 15vw;
 }
-
 .file {
   width: 10vw;
   white-space: nowrap;
@@ -227,7 +235,6 @@ input[type='file'] {
   text-overflow: ellipsis;
   margin: 0 1vw 0 0;
 }
-
 .remove-file {
   color: red;
   cursor: pointer;
