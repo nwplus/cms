@@ -15,38 +15,13 @@
       :originalIntroTexts="introTexts"
       :selectedWebsite="selectedWebsite"
     ></IntroText>
-    <div id="files-select">
-      <div class="large-12 medium-12 small-12 cell">
-        <label id="files-label">Images</label>
-        <hr id="files-hr" />
-        <input
-          id="files"
-          ref="files"
-          type="file"
-          multiple
-          @change="handleFileUpload()"
-        />
-      </div>
-      <div class="large-12 medium-12 small-12 cell">
-        <div v-for="(file, key) in files" :key="key" class="file-listing">
-          <p class="file">{{ file.name }}</p>
-          <p>Sponsor Name</p>
-          <input v-model="file.sponsorName" />
-          <p>Sponsor Url</p>
-          <input v-model="file.url" />
-          <p class="remove-file" @click="removeFile(key)">Remove</p>
-        </div>
-      </div>
-      <br />
-      <div class="large-12 medium-12 small-12 cell">
-        <button id="add-files-button" @click="addFiles()">Add Images</button>
-      </div>
-      <br />
-      <button @click="save">Save</button>
-    </div>
+    <Sponsors
+      :websites="websites"
+      :selected-website="selectedWebsite"
+    ></Sponsors>
     <Faq
       :website="selectedWebsite"
-      :list-of-faq="faq"
+      :listOfFaq="faq"
       @refreshData="refreshData(selectedWebsite)"
     />
   </div>
@@ -59,10 +34,12 @@ import { auth } from '~/plugins/firebase'
 import fireDb from '~/plugins/firebase'
 import Faq from '~/components/FAQ.vue'
 import IntroText from '../components/IntroText'
+import Sponsors from '../components/Sponsors'
 
 export default {
   components: {
     IntroText,
+    Sponsors,
     Faq
   },
   async asyncData({ redirect }) {
@@ -102,23 +79,5 @@ input[type='file'] {
 }
 #website-select {
   display: flex;
-}
-
-.file-listing {
-  display: flex;
-}
-#files-hr {
-  width: 15vw;
-}
-.file {
-  width: 10vw;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin: 0 1vw 0 0;
-}
-.remove-file {
-  color: red;
-  cursor: pointer;
 }
 </style>
