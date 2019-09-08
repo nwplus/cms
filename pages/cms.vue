@@ -85,6 +85,7 @@
       <br />
       <button @click="save">Save</button>
     </div>
+    <Events :events="events" :selectedWebsite="selectedWebsite"></Events>
     <Faq
       :website="selectedWebsite"
       :listOfFaq="faq"
@@ -100,9 +101,11 @@ import firebase from 'firebase/app'
 import { auth } from '../plugins/firebase'
 import fireDb from '~/plugins/firebase'
 import Faq from '~/components/FAQ.vue'
+import Events from '../components/Events'
 
 export default {
   components: {
+    Events,
     Faq
   },
   async asyncData({ redirect }) {
@@ -113,10 +116,13 @@ export default {
     })
     const listOfWebsites = await fireDb.getWebsites()
     const introTexts = await fireDb.getIntroText()
+    const events = await fireDb.getEvents()
+    console.log(events)
     const selectedWebsite = listOfWebsites[0]
     return {
       websites: listOfWebsites,
       introTexts: introTexts,
+      events: events,
       selectedWebsite: selectedWebsite,
       files: [],
       faq: [],

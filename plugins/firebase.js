@@ -45,6 +45,31 @@ const fireDb = {
     }
     return introTexts
   },
+  getEvents: async () => {
+    const websites = await fireDb.getWebsites()
+    const events = {}
+    for (const website of websites) {
+      const websiteData = await db
+        .collection(webCollection)
+        .doc(website)
+        .collection('Events')
+        .get()
+      events[website] = await websiteData.docs.map(doc => {
+        const data = doc.data()
+        return {
+          title: data.title,
+          text: data.text || '',
+          order: data.order,
+          imageLink: data.imageLink || '',
+          eventLink: data.eventLink || '',
+          signupLink: data.signupLink || '',
+          eventLastEditedBy: data.eventLastEditedBy || undefined,
+          eventLastEditedDate: data.eventLastEditedDate || undefined
+        }
+      })
+    }
+    return events
+  },
   updateIntroText: async (website, introText, introSubtext, user, date) => {
     const ref = db.collection(webCollection).doc(website)
     await ref.set({
