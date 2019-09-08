@@ -125,4 +125,32 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+#intro-header {
+  display: flex;
+  background-color: #ededed;
+}
+
+#intro-cancel,
+#intro-save {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+#intro {
+  width: 800px;
+}
+
+.intro-body {
+  background-color: #f5f5f5;
+  display: block;
+}
+
+.last-edited-by {
+  font-size: 0.75rem;
+}
+
+.intro-input {
+  width: 90%;
+}
+</style>
