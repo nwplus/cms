@@ -69,20 +69,42 @@ export default {
   data() {
     return {
       introTexts: this.originalIntroTexts,
-      editingIntro: false
+      editingIntro: false,
+      originalIntroText: '',
+      originalIntroSubtext: '',
+      originalSelectedWebsite: this.selectedWebsite
     }
   },
   watch: {
     selectedWebsite: function() {
-      this.stopEditingIntro()
+      if (this.editingIntro) this.cancelEditingIntro()
     }
   },
   methods: {
     startEditingIntro() {
+      this.originalIntroText = this.introTexts[this.selectedWebsite].introText
+      this.originalIntroSubtext = this.introTexts[
+        this.selectedWebsite
+      ].introSubtext
+
+      this.originalSelectedWebsite = this.selectedWebsite
+
       this.editingIntro = true
     },
     stopEditingIntro() {
+      this.originalIntroText = ''
+      this.originalIntroSubtext = ''
       this.editingIntro = false
+    },
+    cancelEditingIntro() {
+      this.introTexts[
+        this.originalSelectedWebsite
+      ].introText = this.originalIntroText
+      this.introTexts[
+        this.originalSelectedWebsite
+      ].introSubtext = this.originalIntroSubtext
+
+      this.stopEditingIntro()
     },
     async saveEditingIntro() {
       this.introTexts[
