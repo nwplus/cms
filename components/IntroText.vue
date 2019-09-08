@@ -3,7 +3,7 @@
     <div id="intro-header">
       <p>Intro Text</p>
       <button v-if="!editingIntro" @click="startEditingIntro">Edit</button>
-      <p v-if="editingIntro" id="intro-cancel" @click="stopEditingIntro">
+      <p v-if="editingIntro" id="intro-cancel" @click="cancelEditingIntro">
         Cancel
       </p>
       <p v-if="editingIntro" id="intro-save" @click="saveEditingIntro">
