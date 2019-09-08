@@ -55,7 +55,6 @@
 <script>
 /* eslint-disable no-console,import/no-duplicates,prettier/prettier */
 
-import firebase from 'firebase/app'
 import { auth } from '~/plugins/firebase'
 import fireDb from '~/plugins/firebase'
 import Faq from '~/components/FAQ.vue'
