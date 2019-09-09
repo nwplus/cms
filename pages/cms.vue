@@ -33,8 +33,8 @@
 import { auth } from '~/plugins/firebase'
 import fireDb from '~/plugins/firebase'
 import Faq from '~/components/FAQ.vue'
-import IntroText from '../components/IntroText'
-import Sponsors from '../components/Sponsors'
+import IntroText from '~/components/IntroText'
+import Sponsors from '~/components/Sponsors'
 
 export default {
   components: {

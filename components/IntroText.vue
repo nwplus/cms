@@ -49,8 +49,8 @@
 <script>
 /* eslint-disable standard/computed-property-even-spacing */
 
-import fireDb from '~/plugins/firebase'
 import firebase from 'firebase/app'
+import fireDb from '~/plugins/firebase'
 
 export default {
   name: 'IntroText',
