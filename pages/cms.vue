@@ -1,5 +1,6 @@
 <template>
   <div class="sponsor-page">
+    <button @click="logout">Logout</button>
     <div id="website-select">
       <p>Website</p>
       <button
@@ -29,7 +30,7 @@
 
 <script>
 /* eslint-disable no-console,import/no-duplicates,prettier/prettier */
-
+import firebase from 'firebase'
 import { auth } from '~/plugins/firebase'
 import fireDb from '~/plugins/firebase'
 import Faq from '~/components/FAQ.vue'
@@ -43,10 +44,11 @@ export default {
     Faq
   },
   async asyncData({ redirect }) {
-    auth.onAuthStateChanged(function(user) {
+    auth.onAuthStateChanged(async function(user) {
       if (!user) {
         redirect('/')
       }
+      if (!(await fireDb.isAdmin(user.email))) redirect('/')
     })
     const listOfWebsites = await fireDb.getWebsites()
     const introTexts = await fireDb.getIntroText()
@@ -60,6 +62,33 @@ export default {
     }
   },
   methods: {
+    async logout() {
+      try {
+        await firebase.auth().signOut()
+        this.$router.push('/')
+      } catch (error) {
+        alert(error)
+      }
+    },
+    startEditingIntro() {
+      this.editingIntro = true
+    },
+    stopEditingIntro() {
+      this.editingIntro = false
+    },
+    async saveEditingIntro() {
+      this.introTexts[this.selectedWebsite].introLastEditedBy = firebase.auth().currentUser.email
+      this.introTexts[this.selectedWebsite].introLastEditedDate = Date.now()
+
+      await fireDb.updateIntroText(
+        this.selectedWebsite,
+        this.introTexts[this.selectedWebsite].introText,
+        this.introTexts[this.selectedWebsite].introSubtext,
+        this.introTexts[this.selectedWebsite].introLastEditedBy,
+        this.introTexts[this.selectedWebsite].introLastEditedDate
+      )
+      this.stopEditingIntro()
+    },
     async changeWebsite(e) {
       this.selectedWebsite = e.target.value
       await this.refreshData()

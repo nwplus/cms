@@ -8,7 +8,7 @@
 <script>
 /* eslint-disable no-console */
 import firebase from 'firebase/app'
-import { auth } from '../plugins/firebase'
+import fireDb, { auth } from '../plugins/firebase'
 
 export default {
   name: 'Login',
@@ -17,15 +17,27 @@ export default {
       error_message: ''
     }
   },
+  asyncData({ redirect }) {
+    auth.onAuthStateChanged(async function(user) {
+      if (user && (await fireDb.isAdmin(user.email))) redirect('/cms')
+    })
+  },
   methods: {
     async googleSignIn() {
       this.provider = new firebase.auth.GoogleAuthProvider()
       try {
-        await auth.signInWithPopup(this.provider)
+        await firebase
+          .auth()
+          .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        const res = await auth.signInWithPopup(this.provider)
+        if (!(await fireDb.isAdmin(res.user.email))) {
+          alert('You are not an admin')
+          return
+        }
         this.$router.push('/cms')
       } catch (e) {
-        console.log(e)
-        if (e.code === 'auth/web-storage-unsupported') {
+        if (e.code === 'permission-denied') alert('You are not an admin')
+        else if (e.code === 'auth/web-storage-unsupported') {
           this.error_message = 'Please enable 3rd party cookies'
         }
       }
