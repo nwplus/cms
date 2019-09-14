@@ -47,8 +47,12 @@ const fireDb = {
         .doc(website)
         .get()).data()
       introTexts[website] = {
-        introText: websiteData.IntroText.toString(),
-        introSubtext: websiteData.IntroSubtext.toString(),
+        introText: websiteData.IntroText
+          ? websiteData.IntroText.toString()
+          : '',
+        introSubtext: websiteData.IntroSubtext
+          ? websiteData.IntroSubtext.toString()
+          : '',
         introLastEditedBy: websiteData.IntroLastEditedBy || undefined,
         introLastEditedDate: websiteData.IntroLastEditedDate || undefined
       }
