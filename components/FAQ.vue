@@ -5,7 +5,7 @@
     </div>
     <div v-for="faq in listOfFaq" :key="faq.id">
       <br />
-      <input type="checkbox" id="checkbox" v-model="faq.data.selected" />
+      <input id="checkbox" v-model="faq.data.selected" type="checkbox" />
       Question:
       {{ faq.data.question }}
       <br />
@@ -28,10 +28,10 @@
         Edit
       </button>
     </div>
-    <div id="editPanel" v-if="editMode">
+    <div v-if="editMode" id="editPanel">
       Edit
       <br />
-      <input type="checkbox" id="checkbox" v-model="data.selected" />
+      <input id="checkbox" v-model="data.selected" type="checkbox" />
       <br />
       <input v-model="data.question" />
       <br />

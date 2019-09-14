@@ -55,7 +55,7 @@ const fireDb = {
           : '',
         introLastEditedBy: websiteData.IntroLastEditedBy || undefined,
         introLastEditedDate: websiteData.IntroLastEditedDate || undefined,
-        introButtonEnabled: websiteData.IntroButtonEnabled || undefined,
+        introButtonEnabled: websiteData.IntroButtonEnabled,
         introButtonLink: websiteData.IntroButtonLink,
         introSignUpText: websiteData.SignUpText
       }
@@ -73,7 +73,7 @@ const fireDb = {
     signupText = undefined
   ) => {
     const ref = db.collection(webCollection).doc(website)
-    await ref.set({
+    await ref.update({
       IntroText: introText,
       IntroSubtext: introSubtext,
       IntroLastEditedBy: user,
