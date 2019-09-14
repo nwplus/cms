@@ -24,6 +24,16 @@ const storage = firebase.storage()
 const webCollection = 'Website_content'
 
 const fireDb = {
+  isAdmin: async email => {
+    const ref = db.collection('admins')
+    const admins = (await ref.get()).docs
+    for (const admin of admins) {
+      const col = ref.doc(admin.id)
+      const userData = (await col.get()).data()
+      if (userData.email === email) return true
+    }
+    return false
+  },
   getWebsites: async () => {
     const ref = db.collection(webCollection)
     return (await ref.get()).docs.map(doc => doc.id)
@@ -37,8 +47,12 @@ const fireDb = {
         .doc(website)
         .get()).data()
       introTexts[website] = {
-        introText: websiteData.IntroText.toString(),
-        introSubtext: websiteData.IntroSubtext.toString(),
+        introText: websiteData.IntroText
+          ? websiteData.IntroText.toString()
+          : '',
+        introSubtext: websiteData.IntroSubtext
+          ? websiteData.IntroSubtext.toString()
+          : '',
         introLastEditedBy: websiteData.IntroLastEditedBy || undefined,
         introLastEditedDate: websiteData.IntroLastEditedDate || undefined
       }
@@ -96,12 +110,20 @@ const fireDb = {
       try {
         const ref = storage.ref(`${website}/${file.name}`)
         await ref.put(file)
+      } catch (e) {
+        console.log(e)
+        failedUploads.push(file.name)
+      }
+
+      try {
         await this.addSponsorInformation(website, {
           image: file.name,
           name: file.sponsorName.trim(),
           url: file.url.trim()
         })
       } catch (e) {
+        const ref = storage.ref(`${website}/${file.name}`)
+        await ref.delete()
         console.log(e)
         failedUploads.push(file.name)
       }

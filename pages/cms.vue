@@ -1,5 +1,6 @@
 <template>
   <div class="sponsor-page">
+    <button @click="logout">Logout</button>
     <div id="website-select">
       <p>Website</p>
       <button
@@ -11,81 +12,14 @@
         {{ w }}
       </button>
     </div>
-    <div id="intro">
-      <div id="intro-header">
-        <p>Intro Text</p>
-        <button v-if="!editingIntro" @click="startEditingIntro">Edit</button>
-        <p v-if="editingIntro" id="intro-cancel" @click="stopEditingIntro">
-          Cancel
-        </p>
-        <p v-if="editingIntro" id="intro-save" @click="saveEditingIntro">
-          Save
-        </p>
-      </div>
-      <div v-if="!editingIntro" class="intro-body">
-        <p>{{ introTexts[selectedWebsite].introText }}</p>
-        <p>{{ introTexts[selectedWebsite].introSubtext }}</p>
-      </div>
-      <div v-if="editingIntro" class="intro-body">
-        <p
-          v-if="
-            introTexts[selectedWebsite].introLastEditedBy &&
-              introTexts[selectedWebsite].introLastEditedBy
-          "
-          class="last-edited-by"
-        >
-          Last Edited By:
-          {{ introTexts[selectedWebsite].introLastEditedBy }} at
-          {{
-            new Date(
-              introTexts[selectedWebsite].introLastEditedDate
-            ).toISOString()
-          }}
-        </p>
-        <div id="title">
-          <p>Title</p>
-        </div>
-        <textarea
-          v-model="introTexts[selectedWebsite].introText"
-          class="intro-input"
-        />
-        <p>Description</p>
-        <textarea
-          v-model="introTexts[selectedWebsite].introSubtext"
-          class="intro-input"
-        />
-      </div>
-    </div>
-    <div id="files-select">
-      <div class="large-12 medium-12 small-12 cell">
-        <label id="files-label">Images</label>
-        <hr id="files-hr" />
-        <input
-          id="files"
-          ref="files"
-          type="file"
-          multiple
-          @change="handleFileUpload()"
-        />
-      </div>
-      <div class="large-12 medium-12 small-12 cell">
-        <div v-for="(file, key) in files" :key="key" class="file-listing">
-          <p class="file">{{ file.name }}</p>
-          <p>Sponsor Name</p>
-          <input v-model="file.sponsorName" />
-          <p>Sponsor Url</p>
-          <input v-model="file.url" />
-          <p class="remove-file" @click="removeFile(key)">Remove</p>
-        </div>
-      </div>
-      <br />
-      <div class="large-12 medium-12 small-12 cell">
-        <button id="add-files-button" @click="addFiles()">Add Images</button>
-      </div>
-      <br />
-      <button @click="save">Save</button>
-    </div>
-    <Events :events="events" :selectedWebsite="selectedWebsite"></Events>
+    <IntroText
+      :originalIntroTexts="introTexts"
+      :selectedWebsite="selectedWebsite"
+    ></IntroText>
+    <Sponsors
+      :websites="websites"
+      :selected-website="selectedWebsite"
+    ></Sponsors>
     <Faq
       :website="selectedWebsite"
       :listOfFaq="faq"
@@ -96,23 +30,25 @@
 
 <script>
 /* eslint-disable no-console,import/no-duplicates,prettier/prettier */
-
-import firebase from 'firebase/app'
-import { auth } from '../plugins/firebase'
+import firebase from 'firebase'
+import { auth } from '~/plugins/firebase'
 import fireDb from '~/plugins/firebase'
 import Faq from '~/components/FAQ.vue'
-import Events from '../components/Events'
+import IntroText from '~/components/IntroText'
+import Sponsors from '~/components/Sponsors'
 
 export default {
   components: {
-    Events,
+    IntroText,
+    Sponsors,
     Faq
   },
   async asyncData({ redirect }) {
-    auth.onAuthStateChanged(function(user) {
+    auth.onAuthStateChanged(async function(user) {
       if (!user) {
         redirect('/')
       }
+      if (!(await fireDb.isAdmin(user.email))) redirect('/')
     })
     const listOfWebsites = await fireDb.getWebsites()
     const introTexts = await fireDb.getIntroText()
@@ -125,11 +61,18 @@ export default {
       events: events,
       selectedWebsite: selectedWebsite,
       files: [],
-      faq: [],
-      editingIntro: false
+      faq: []
     }
   },
   methods: {
+    async logout() {
+      try {
+        await firebase.auth().signOut()
+        this.$router.push('/')
+      } catch (error) {
+        alert(error)
+      }
+    },
     startEditingIntro() {
       this.editingIntro = true
     },
@@ -156,93 +99,17 @@ export default {
     async refreshData() {
       // add more lines to pull more data if needed
       this.faq = await fireDb.get(this.selectedWebsite, 'Faq')
-    },
-    addFiles() {
-      this.$refs.files.click()
-    },
-    removeFile(key) {
-      this.files.splice(key, 1)
-    },
-    handleFileUpload() {
-      const uploadedFiles = this.$refs.files.files
-      for (let i = 0; i < uploadedFiles.length; i++) {
-        uploadedFiles[i].sponsorName = ''
-        uploadedFiles[i].url = ''
-        this.files.push(uploadedFiles[i])
-      }
-    },
-    async save() {
-      if (!this.websites.includes(this.selectedWebsite)) {
-        alert('Please select a website')
-        return
-      }
-      const failedUploads = await firebase.uploadImages(
-        this.selectedWebsite,
-        this.files
-      )
-      if (failedUploads.length > 0) {
-        let alertString = 'Failed to upload the following files:'
-        for (const file of failedUploads) alertString += `\n${file}`
-        alert(alertString)
-      }
-      window.location.reload(true)
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 input[type='file'] {
   position: absolute;
   top: -500px;
 }
 #website-select {
   display: flex;
-}
-
-#intro-header {
-  display: flex;
-  background-color: #ededed;
-}
-
-#intro-cancel,
-#intro-save {
-  margin-left: 20px;
-  cursor: pointer;
-}
-
-#intro {
-  width: 800px;
-}
-
-.intro-body {
-  background-color: #f5f5f5;
-  display: block;
-}
-
-.last-edited-by {
-  font-size: 0.75rem;
-}
-
-.intro-input {
-  width: 90%;
-}
-
-.file-listing {
-  display: flex;
-}
-#files-hr {
-  width: 15vw;
-}
-.file {
-  width: 10vw;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin: 0 1vw 0 0;
-}
-.remove-file {
-  color: red;
-  cursor: pointer;
 }
 </style>
