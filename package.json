@@ -23,6 +23,7 @@
     "firebaseui": "^4.1.0",
     "firestore": "^1.1.6",
     "nuxt": "^2.0.0",
+    "nuxt-buefy": "^0.3.14",
     "vue": "latest",
     "vue-dynamic-select": "^1.0.14",
     "vue-loading-overlay": "^3.2.0"
