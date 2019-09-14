@@ -54,18 +54,33 @@ const fireDb = {
           ? websiteData.IntroSubtext.toString()
           : '',
         introLastEditedBy: websiteData.IntroLastEditedBy || undefined,
-        introLastEditedDate: websiteData.IntroLastEditedDate || undefined
+        introLastEditedDate: websiteData.IntroLastEditedDate || undefined,
+        introButtonEnabled: websiteData.IntroButtonEnabled || undefined,
+        introButtonLink: websiteData.IntroButtonLink,
+        introSignUpText: websiteData.SignUpText
       }
     }
     return introTexts
   },
-  updateIntroText: async (website, introText, introSubtext, user, date) => {
+  updateIntroText: async (
+    website,
+    introText,
+    introSubtext,
+    user,
+    date,
+    enabled = undefined,
+    signupLink = undefined,
+    signupText = undefined
+  ) => {
     const ref = db.collection(webCollection).doc(website)
     await ref.set({
       IntroText: introText,
       IntroSubtext: introSubtext,
       IntroLastEditedBy: user,
-      IntroLastEditedDate: date
+      IntroLastEditedDate: date,
+      IntroButtonEnabled: enabled || false,
+      IntroButtonLink: signupLink || '',
+      SignUpText: signupText || ''
     })
   },
   addSponsorInformation: async (website, sponsor) => {
