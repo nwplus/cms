@@ -37,7 +37,8 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/eslint-module',
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    'nuxt-buefy'
   ],
   /*
    ** Axios module configuration

@@ -59,6 +59,75 @@ const fireDb = {
     }
     return introTexts
   },
+  getEvents: async () => {
+    const websites = await fireDb.getWebsites()
+    const events = {}
+    for (const website of websites) {
+      const websiteData = await db
+        .collection(webCollection)
+        .doc(website)
+        .collection('Events')
+        .get()
+      events[website] = await websiteData.docs.map(doc => {
+        const data = doc.data()
+        return {
+          id: doc.id,
+          title: data.title,
+          text: data.text || '',
+          order: data.order,
+          imageLink: data.imageLink || '',
+          eventLink: data.eventLink || '',
+          signupLink: data.signupLink || '',
+          eventLastEditedBy: data.eventLastEditedBy || undefined,
+          eventLastEditedDate: data.eventLastEditedDate || undefined,
+          enabled: data.enabled
+        }
+      })
+    }
+    return events
+  },
+  addEvent: async (website, event) => {
+    const ref = db
+      .collection(webCollection)
+      .doc(website)
+      .collection('Events')
+    await ref.add({
+      title: event.title || '',
+      order: parseInt(event.order) || -1,
+      text: event.text || '',
+      eventLink: event.eventLink || '',
+      learnMoreLink: event.learnMoreLink || '',
+      signupLink: event.signupLink || '',
+      imageLink: event.imageLink || '',
+      enabled: true
+    })
+  },
+  updateEvent: async (website, event) => {
+    const ref = db
+      .collection(webCollection)
+      .doc(website)
+      .collection('Events')
+      .doc(event.id)
+    await ref.update({
+      title: event.title || '',
+      order: parseInt(event.order) || -1,
+      text: event.text || '',
+      eventLink: event.eventLink || '',
+      learnMoreLink: event.learnMoreLink || '',
+      signupLink: event.signupLink || '',
+      imageLink: event.imageLink || ''
+    })
+  },
+  updateEventEnabled: async (website, event) => {
+    const ref = db
+      .collection(webCollection)
+      .doc(website)
+      .collection('Events')
+      .doc(event.id)
+    await ref.update({
+      enabled: event.enabled
+    })
+  },
   updateIntroText: async (website, introText, introSubtext, user, date) => {
     const ref = db.collection(webCollection).doc(website)
     await ref.set({
@@ -135,8 +204,9 @@ const fireDb = {
       .add(object)
     return ref.id
   },
-  delete: (webDocument, collection, docId) => {
-    db.collection(webCollection)
+  delete: async (webDocument, collection, docId) => {
+    await db
+      .collection(webCollection)
       .doc(webDocument)
       .collection(collection)
       .doc(docId)
