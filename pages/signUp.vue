@@ -47,7 +47,6 @@ export default {
             pass: this.secret
           }
         )
-        console.log('Sucess!')
         this.$router.push('/cms')
       } catch (e) {
         alert('incorrect password')
