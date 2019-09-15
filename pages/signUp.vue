@@ -41,7 +41,7 @@ export default {
       const uid = auth.currentUser.uid
       try {
         await this.$axios.post(
-          'http://localhost:5000/nwhacks-2019-dev/us-central1/newAdmin',
+          'https://us-central1-nwhacks-2019-dev.cloudfunctions.net/newAdmin',
           {
             uid: uid,
             pass: this.secret
