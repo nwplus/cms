@@ -19,7 +19,11 @@ export default {
   },
   asyncData({ redirect }) {
     auth.onAuthStateChanged(async function(user) {
-      if (user && (await fireDb.isAdmin(user.email))) redirect('/cms')
+      if (user && (await fireDb.isAdmin(user.email))) {
+        redirect('/cms')
+      } else if (user) {
+        redirect('/signUp')
+      }
     })
   },
   methods: {
@@ -31,12 +35,12 @@ export default {
           .setPersistence(firebase.auth.Auth.Persistence.SESSION)
         const res = await auth.signInWithPopup(this.provider)
         if (!(await fireDb.isAdmin(res.user.email))) {
-          alert('You are not an admin')
+          this.$router.push('/signUp')
           return
         }
         this.$router.push('/cms')
       } catch (e) {
-        if (e.code === 'permission-denied') alert('You are not an admin')
+        if (e.code === 'permission-denied') this.$router.push('/signUp')
         else if (e.code === 'auth/web-storage-unsupported') {
           this.error_message = 'Please enable 3rd party cookies'
         }
