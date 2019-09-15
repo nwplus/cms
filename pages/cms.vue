@@ -20,6 +20,10 @@
       :websites="websites"
       :selected-website="selectedWebsite"
     ></Sponsors>
+    <Events
+      :selectedWebsite="selectedWebsite"
+      :originalEvents="events"
+    ></Events>
     <Faq
       :website="selectedWebsite"
       :listOfFaq="faq"
@@ -36,9 +40,11 @@ import fireDb from '~/plugins/firebase'
 import Faq from '~/components/FAQ.vue'
 import IntroText from '~/components/IntroText'
 import Sponsors from '~/components/Sponsors'
+import Events from '../components/Events'
 
 export default {
   components: {
+    Events,
     IntroText,
     Sponsors,
     Faq
@@ -52,10 +58,12 @@ export default {
     })
     const listOfWebsites = await fireDb.getWebsites()
     const introTexts = await fireDb.getIntroText()
+    const events = await fireDb.getEvents()
     const selectedWebsite = listOfWebsites[0]
     return {
       websites: listOfWebsites,
       introTexts: introTexts,
+      events: events,
       selectedWebsite: selectedWebsite,
       files: [],
       faq: []
