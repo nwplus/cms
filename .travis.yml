@@ -1,0 +1,24 @@
+language: node_js
+node_js: node
+notifications:
+  email: false
+install:
+  - npm install
+jobs:
+  include:
+    - stage: "Lint, Test and Build"
+    - script: npm run lint && npm run test && npm run generate
+    - stage: Deploy
+      script: npm run generate:prod && echo "cms.nwplus.io" >> dist/CNAME
+      deploy:
+        provider: pages
+        skip_cleanup: true
+        github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+        keep_history: true
+        local_dir: dist
+        on:
+          branch: master
+stages:
+  - "Lint, Test and Build"
+  - name: Deploy
+    if: branch = master

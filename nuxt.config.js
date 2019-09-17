@@ -1,10 +1,33 @@
+const envVars =
+  process.env.DEPLOY_ENV === 'GH_PAGES' ||
+  process.env.DEPLOY_ENV === 'PRODUCTION'
+    ? {
+        env: {
+          FIREBASE_API_KEY: 'AIzaSyCBkQHeikIsiYZ2yOHiqH_mGJKDWMDU500',
+          FIREBASE_AUTH_DOMAIN: 'nwhacks-2019.firebaseapp.com',
+          FIREBASE_DATABASE_URL: 'https://nwhacks-2019.firebaseio.com',
+          FIREBASE_PROJECT_ID: 'nwhacks-2019',
+          FIREBASE_STORAGE_BUCKET: 'nwhacks-2019',
+          FIREBASE_MESSAGING_SENDER_ID: '98283589440',
+          RECAPTCHA_SITE_KEY: '6Lf-PXcUAAAAAKqB-M3SNbBz5D67TtHAo94_YwyJ',
+          signUpUrl:
+            'https://us-central1-nwhacks-2019.cloudfunctions.net/newAdmin/'
+        }
+      }
+    : {
+        env: {
+          signUpUrl:
+            'https://us-central1-nwhacks-2019-dev.cloudfunctions.net/newAdmin/'
+        }
+      }
 export default {
+  ...envVars,
   mode: 'spa',
   /*
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'nwPlus CMS',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -19,7 +42,7 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  loading: '~/components/loading-icon.vue',
   /*
    ** Global CSS
    */
@@ -37,7 +60,8 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/eslint-module',
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    'nuxt-buefy'
   ],
   /*
    ** Axios module configuration
