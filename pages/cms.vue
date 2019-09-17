@@ -1,6 +1,13 @@
 <template>
-  <div class="sponsor-page">
+  <div
+    :class="
+      `sponsor-page ${darkmode ? 'has-text-white has-background-dark' : ''}`
+    "
+  >
     <button @click="logout">Logout</button>
+    <button @click="switchMode">
+      {{ darkmode ? `light mode` : 'dark mode' }}
+    </button>
     <div id="website-select">
       <p>Website</p>
       <button
@@ -35,12 +42,12 @@
 <script>
 /* eslint-disable no-console,import/no-duplicates,prettier/prettier */
 import firebase from 'firebase'
+import Events from '../components/Events'
 import { auth } from '~/plugins/firebase'
 import fireDb from '~/plugins/firebase'
 import Faq from '~/components/FAQ.vue'
 import IntroText from '~/components/IntroText'
 import Sponsors from '~/components/Sponsors'
-import Events from '../components/Events'
 
 export default {
   components: {
@@ -48,6 +55,11 @@ export default {
     IntroText,
     Sponsors,
     Faq
+  },
+  computed: {
+    darkmode () {
+      return this.$store.state.darkmode
+    },
   },
   async asyncData({ redirect }) {
     auth.onAuthStateChanged(async function(user) {
@@ -70,6 +82,7 @@ export default {
     }
   },
   methods: {
+    switchMode() {this.$store.commit('switchMode')},
     async logout() {
       try {
         await firebase.auth().signOut()

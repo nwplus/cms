@@ -1,6 +1,10 @@
 <template>
   <div id="events">
-    <b-modal :active.sync="addEditModal" :can-cancel="false">
+    <b-modal
+      class="has-text-white"
+      :active.sync="addEditModal"
+      :can-cancel="false"
+    >
       <div class="field">
         <label for="title">Title</label>
         <input id="title" v-model="title" />
@@ -32,7 +36,11 @@
       <button @click="save">Save</button>
       <button @click="cancel">Cancel</button>
     </b-modal>
-    <b-modal :active.sync="viewModal" :on-cancel="cancel">
+    <b-modal
+      class="has-text-white"
+      :active.sync="viewModal"
+      :on-cancel="cancel"
+    >
       <p>Title: {{ title }}</p>
       <p>Order: {{ order }}</p>
       <p>Text: {{ text }}</p>
@@ -48,10 +56,12 @@
     <table id="events-body">
       <thead>
         <tr>
-          <th>Event</th>
-          <th>Enabled</th>
-          <th>Last Modified</th>
-          <th colspan="3">Actions</th>
+          <th :class="`${darkmode ? 'has-text-white' : ''}`">Event</th>
+          <th :class="`${darkmode ? 'has-text-white' : ''}`">Enabled</th>
+          <th :class="`${darkmode ? 'has-text-white' : ''}`">Last Modified</th>
+          <th :class="`${darkmode ? 'has-text-white' : ''}`" colspan="3">
+            Actions
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -65,7 +75,7 @@
             />
           </td>
           <td v-if="e.eventLastEditedBy && e.eventLastEditedDate">
-            {{ new Date(eventLastEditedDate) }} by {{ e.eventLastEditedBy }}
+            {{ e.eventLastEditedDate }} by {{ e.eventLastEditedBy }}
           </td>
           <td v-else>Never Modified</td>
           <td><button @click="view_event(index)">View</button></td>
@@ -80,6 +90,7 @@
 <script>
 /* eslint-disable no-console */
 
+import firebase from 'firebase/app'
 import fireDb from '../plugins/firebase'
 
 export default {
@@ -110,6 +121,11 @@ export default {
       index: undefined,
       events: this.originalEvents,
       editing: false
+    }
+  },
+  computed: {
+    darkmode() {
+      return this.$store.state.darkmode
     }
   },
   methods: {
@@ -188,7 +204,9 @@ export default {
           eventLink: this.eventLink,
           learnMoreLink: this.learnMoreLink,
           signupLink: this.signupLink,
-          imageLink: this.imageLink
+          imageLink: this.imageLink,
+          eventLastEditedBy: firebase.auth().currentUser.email,
+          eventLastEditedDate: new Date(Date.now())
         })
       else
         await fireDb.updateEvent(this.selectedWebsite, {
@@ -199,7 +217,9 @@ export default {
           eventLink: this.eventLink,
           learnMoreLink: this.learnMoreLink,
           signupLink: this.signupLink,
-          imageLink: this.imageLink
+          imageLink: this.imageLink,
+          eventLastEditedBy: firebase.auth().currentUser.email,
+          eventLastEditedDate: new Date(Date.now())
         })
       this.index = undefined
       this.editing = false
@@ -222,19 +242,17 @@ export default {
 
 #events-header {
   display: flex;
-  background-color: #ededed;
 }
 
 #events-body {
-  background-color: #f5f5f5;
   display: block;
-}
-
-#events-table-header {
-  display: flex;
 }
 
 .field {
   display: flex;
+}
+
+.modal {
+  color: white;
 }
 </style>
