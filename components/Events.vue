@@ -49,17 +49,18 @@
       <p>Signup Link: {{ signupLink }}</p>
       <p>Image Link: {{ imageLink }}</p>
     </b-modal>
+    <p :class="`title is-4 ${darkmodeText}`">Events</p>
+
     <div id="events-header">
-      <p>Events</p>
       <button @click="add_event">Add Event</button>
     </div>
     <table id="events-body">
       <thead>
         <tr>
-          <th :class="`${darkmode ? 'has-text-white' : ''}`">Event</th>
-          <th :class="`${darkmode ? 'has-text-white' : ''}`">Enabled</th>
-          <th :class="`${darkmode ? 'has-text-white' : ''}`">Last Modified</th>
-          <th :class="`${darkmode ? 'has-text-white' : ''}`" colspan="3">
+          <th :class="darkmodeText">Event</th>
+          <th :class="darkmodeText">Enabled</th>
+          <th :class="darkmodeText">Last Modified</th>
+          <th :class="darkmodeText" colspan="3">
             Actions
           </th>
         </tr>
@@ -121,11 +122,6 @@ export default {
       index: undefined,
       events: this.originalEvents,
       editing: false
-    }
-  },
-  computed: {
-    darkmode() {
-      return this.$store.state.darkmode
     }
   },
   methods: {

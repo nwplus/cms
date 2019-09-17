@@ -1,5 +1,7 @@
 <template>
   <div>
+    <p :class="`title is-4 ${darkmodeText}`">FAQ</p>
+
     <div>
       <button @click="handleAddition()">Add FAQ</button>
     </div>
