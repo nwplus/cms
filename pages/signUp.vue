@@ -40,13 +40,10 @@ export default {
     async adminSignUp() {
       const uid = auth.currentUser.uid
       try {
-        await this.$axios.post(
-         process.env.signUpUrl,
-          {
-            uid: uid,
-            pass: this.secret
-          }
-        )
+        await this.$axios.post(process.env.signUpUrl, {
+          uid: uid,
+          pass: this.secret
+        })
         this.$router.push('/cms')
       } catch (e) {
         alert('incorrect password')
