@@ -57,8 +57,7 @@
 </style>
 <script>
 /* eslint-disable no-console */
-import fireDb from '~/plugins/firebase'
-import { auth } from '~/plugins/firebase'
+import fireDb, { auth } from '~/plugins/firebase'
 export default {
   props: {
     website: {
@@ -67,7 +66,10 @@ export default {
     },
     listOfFaq: {
       type: Array,
-      required: false
+      required: false,
+      default() {
+        return []
+      }
     }
   },
   data() {
