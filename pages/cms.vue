@@ -1,13 +1,17 @@
 <template>
   <div
     :class="
-      `sponsor-page ${darkmode ? 'has-text-white has-background-dark' : ''}`
+      `hero sponsor-page is-fullheight ${
+        darkmode ? 'has-text-white has-background-dark' : ''
+      }`
     "
   >
-    <button @click="logout">Logout</button>
-    <button @click="switchMode">
-      {{ darkmode ? `light mode` : 'dark mode' }}
-    </button>
+    <div>
+      <button @click="logout">Logout</button>
+      <button @click="switchMode">
+        {{ darkmode ? `light mode` : 'dark mode' }}
+      </button>
+    </div>
     <div id="website-select">
       <p>Website</p>
       <button
