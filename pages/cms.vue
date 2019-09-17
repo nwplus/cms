@@ -150,4 +150,8 @@ input[type='file'] {
 #website-select {
   text-align: center;
 }
+.nwpluslogo {
+  height: 60px;
+  padding-right: 30%;
+}
 </style>
