@@ -1,8 +1,11 @@
 <template>
   <div>
-    <section class="hero has-background-black is-fullheight">
-      <div class="centered has-text-white container">
-        <p class="title has-text-white">
+    <section :class="`hero ${darkmodeBackground} is-fullheight`">
+      <div :class="`centered ${darkmodeText} container`">
+        <div style="position: absolute; left: 0%; top: 0%;">
+          <darkmodeToggle />
+        </div>
+        <p :class="`title ${darkmodeText}`">
           You are not an admin! <br />
           If you work for nwPlus, please enter the password here
         </p>
@@ -33,9 +36,11 @@
 <script>
 /* eslint-disable no-console */
 import fireDb, { auth } from '../plugins/firebase'
+import darkmodeToggle from '~/components/DarkmodeToggle'
 
 export default {
   name: 'Login',
+  components: { darkmodeToggle },
   data() {
     return {
       error_message: '',

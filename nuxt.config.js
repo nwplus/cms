@@ -50,7 +50,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ['~/plugins/darkmode.js'],
   /*
    ** Nuxt.js modules
    */
