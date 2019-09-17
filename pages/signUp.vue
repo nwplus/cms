@@ -1,15 +1,32 @@
 <template>
-  <div class="container">
-    <div class="content">
-      <h1>
-        You are not an admin! If you work for nwplus, please enter the password
-        here
-      </h1>
-      <br />
-      <p>Password:</p>
-      <input v-model="secret" />
-      <button @click="adminSignUp">Activate admin account</button>
-    </div>
+  <div>
+    <section class="hero has-background-black is-fullheight">
+      <div class="centered has-text-white container">
+        <p class="title has-text-white">
+          You are not an admin! If you work for nwplus, please enter the
+          password here
+        </p>
+        <div class="is-centered columns is-gapless">
+          <div class="column is-one-quarter">
+            <div :class="`control ${loadState}`">
+              <input
+                v-model="secret"
+                :class="`input is-primary is-medium ${loadState}`"
+                type="password"
+                placeholder="password"
+              />
+            </div>
+          </div>
+          <div class="column is-one-quarter">
+            <b-button
+              :class="`is-primary is-medium ${loadState}`"
+              @click="adminSignUp"
+              >Activate admin account</b-button
+            >
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -23,7 +40,8 @@ export default {
     return {
       error_message: '',
       secret: '',
-      message: ''
+      message: '',
+      loadState: ''
     }
   },
   asyncData({ redirect }) {
@@ -38,6 +56,7 @@ export default {
   },
   methods: {
     async adminSignUp() {
+      this.loadState = 'is-loading'
       const uid = auth.currentUser.uid
       try {
         await this.$axios.post(process.env.signUpUrl, {
@@ -46,6 +65,7 @@ export default {
         })
         this.$router.push('/cms')
       } catch (e) {
+        this.loadState = ''
         alert('incorrect password')
       }
     }
@@ -54,10 +74,8 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.centered {
   text-align: center;
-}
-.content {
-  padding-top: 25%;
+  padding: 15% 2%;
 }
 </style>

@@ -1,7 +1,29 @@
 <template>
   <div>
-    <button @click="googleSignIn">Log in with Google</button>
-    <p id="error-message">{{ error_message }}</p>
+    <section class="hero has-background-black centered is-fullheight">
+      <div class="container has-text-centered">
+        <div class="level">
+          <div class="level-item has-text-centered">
+            <div>
+              <img
+                class="nwpluslogo"
+                src="~/assets/nwplus.svg"
+                alt="nwplus logo"
+              />
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="title has-text-light">nwPlus CMS</p>
+            </div>
+          </div>
+        </div>
+        <b-button :type="buttonState + ' is-primary'" @click="googleSignIn"
+          >Login</b-button
+        >
+        <p id="error-message">{{ error_message }}</p>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -14,7 +36,8 @@ export default {
   name: 'Login',
   data() {
     return {
-      error_message: ''
+      error_message: '',
+      buttonState: ''
     }
   },
   asyncData({ redirect }) {
@@ -28,6 +51,7 @@ export default {
   },
   methods: {
     async googleSignIn() {
+      this.buttonState = 'is-loading'
       this.provider = new firebase.auth.GoogleAuthProvider()
       try {
         await firebase
@@ -51,6 +75,13 @@ export default {
 </script>
 
 <style scoped>
+.nwpluslogo {
+  height: 40px;
+  padding-right: 30%;
+}
+.centered {
+  padding-top: 15%;
+}
 #error-message {
   color: red;
 }
