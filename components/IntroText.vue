@@ -1,7 +1,7 @@
 <template>
   <div id="intro">
     <div id="intro-header">
-      <p>Intro Text</p>
+      <p>Intro</p>
       <button v-if="!editingIntro" @click="startEditingIntro">Edit</button>
       <p v-if="editingIntro" id="intro-cancel" @click="cancelEditingIntro">
         Cancel
@@ -11,8 +11,23 @@
       </p>
     </div>
     <div v-if="!editingIntro" class="intro-body">
-      <p>{{ introTexts[selectedWebsite].introText }}</p>
-      <p>{{ introTexts[selectedWebsite].introSubtext }}</p>
+      <p>Intro text: {{ introTexts[selectedWebsite].introText }}</p>
+      <p v-if="introTexts[selectedWebsite].introSubtext">
+        Intro sub text: {{ introTexts[selectedWebsite].introSubtext }}
+      </p>
+      <div v-if="introTexts[selectedWebsite].introButtonEnabled !== undefined">
+        <p>
+          Sign up button enabled:
+          {{ introTexts[selectedWebsite].introButtonEnabled }}
+        </p>
+        <p>
+          Sign up button link: {{ introTexts[selectedWebsite].introButtonLink }}
+        </p>
+        <p>
+          Sign up text (under the buttons):
+          {{ introTexts[selectedWebsite].introSignUpText }}
+        </p>
+      </div>
     </div>
     <div v-if="editingIntro" class="intro-body">
       <p
@@ -42,6 +57,25 @@
         v-model="introTexts[selectedWebsite].introSubtext"
         class="intro-input"
       />
+      <div v-if="introTexts[selectedWebsite].introButtonEnabled !== undefined">
+        <div class="checkbox-div">
+          <p>Sign up button enabled</p>
+          <input
+            v-model="introTexts[selectedWebsite].introButtonEnabled"
+            type="checkbox"
+          />
+        </div>
+        <p>Sign up button link</p>
+        <textarea
+          v-model="introTexts[selectedWebsite].introButtonLink"
+          class="intro-input"
+        />
+        <p>Sign up text (under the buttons</p>
+        <textarea
+          v-model="introTexts[selectedWebsite].introSignUpText"
+          class="intro-input"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -117,7 +151,10 @@ export default {
         this.introTexts[this.selectedWebsite].introText,
         this.introTexts[this.selectedWebsite].introSubtext,
         this.introTexts[this.selectedWebsite].introLastEditedBy,
-        this.introTexts[this.selectedWebsite].introLastEditedDate
+        this.introTexts[this.selectedWebsite].introLastEditedDate,
+        this.introTexts[this.selectedWebsite].introButtonEnabled,
+        this.introTexts[this.selectedWebsite].introButtonLink,
+        this.introTexts[this.selectedWebsite].introSignUpText
       )
       this.stopEditingIntro()
     }
@@ -126,6 +163,15 @@ export default {
 </script>
 
 <style scoped>
+.checkbox-div {
+  display: flex;
+  vertical-align: middle;
+}
+.checkbox-div > input {
+  margin: 5px;
+  margin-bottom: 2.5%;
+}
+
 #intro-header {
   display: flex;
   background-color: #ededed;
