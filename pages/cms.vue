@@ -1,6 +1,11 @@
 <template>
-  <div class="sponsor-page">
+  <div
+    :class="
+      `sponsor-page ${darkmode ? 'has-text-white has-background-dark' : ''}`
+    "
+  >
     <button @click="logout">Logout</button>
+    <button @click="switchMode">dark mode</button>
     <div id="website-select">
       <p>Website</p>
       <button
@@ -49,6 +54,11 @@ export default {
     Sponsors,
     Faq
   },
+  computed: {
+    darkmode () {
+      return this.$store.state.darkmode
+    },
+  },
   async asyncData({ redirect }) {
     auth.onAuthStateChanged(async function(user) {
       if (!user) {
@@ -70,6 +80,7 @@ export default {
     }
   },
   methods: {
+    switchMode() {this.$store.commit('switchMode')},
     async logout() {
       try {
         await firebase.auth().signOut()

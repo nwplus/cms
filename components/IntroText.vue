@@ -174,7 +174,6 @@ export default {
 
 #intro-header {
   display: flex;
-  background-color: #ededed;
 }
 
 #intro-cancel,
@@ -188,7 +187,6 @@ export default {
 }
 
 .intro-body {
-  background-color: #f5f5f5;
   display: block;
 }
 
