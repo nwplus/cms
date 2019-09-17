@@ -5,7 +5,9 @@
     "
   >
     <button @click="logout">Logout</button>
-    <button @click="switchMode">dark mode</button>
+    <button @click="switchMode">
+      {{ darkmode ? `light mode` : 'dark mode' }}
+    </button>
     <div id="website-select">
       <p>Website</p>
       <button
