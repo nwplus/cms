@@ -75,7 +75,7 @@
             />
           </td>
           <td v-if="e.eventLastEditedBy && e.eventLastEditedDate">
-            {{ new Date(eventLastEditedDate) }} by {{ e.eventLastEditedBy }}
+            {{ e.eventLastEditedDate }} by {{ e.eventLastEditedBy }}
           </td>
           <td v-else>Never Modified</td>
           <td><button @click="view_event(index)">View</button></td>
@@ -90,6 +90,7 @@
 <script>
 /* eslint-disable no-console */
 
+import firebase from 'firebase/app'
 import fireDb from '../plugins/firebase'
 
 export default {
@@ -203,7 +204,9 @@ export default {
           eventLink: this.eventLink,
           learnMoreLink: this.learnMoreLink,
           signupLink: this.signupLink,
-          imageLink: this.imageLink
+          imageLink: this.imageLink,
+          eventLastEditedBy: firebase.auth().currentUser.email,
+          eventLastEditedDate: new Date(Date.now())
         })
       else
         await fireDb.updateEvent(this.selectedWebsite, {
@@ -214,7 +217,9 @@ export default {
           eventLink: this.eventLink,
           learnMoreLink: this.learnMoreLink,
           signupLink: this.signupLink,
-          imageLink: this.imageLink
+          imageLink: this.imageLink,
+          eventLastEditedBy: firebase.auth().currentUser.email,
+          eventLastEditedDate: new Date(Date.now())
         })
       this.index = undefined
       this.editing = false
@@ -243,11 +248,11 @@ export default {
   display: block;
 }
 
-#events-table-header {
+.field {
   display: flex;
 }
 
-.field {
-  display: flex;
+.modal {
+  color: white;
 }
 </style>

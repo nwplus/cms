@@ -40,12 +40,12 @@
 <script>
 /* eslint-disable no-console,import/no-duplicates,prettier/prettier */
 import firebase from 'firebase'
+import Events from '../components/Events'
 import { auth } from '~/plugins/firebase'
 import fireDb from '~/plugins/firebase'
 import Faq from '~/components/FAQ.vue'
 import IntroText from '~/components/IntroText'
 import Sponsors from '~/components/Sponsors'
-import Events from '../components/Events'
 
 export default {
   components: {
