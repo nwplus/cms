@@ -9,7 +9,7 @@ jobs:
     - stage: "Lint, Test and Build"
     - script: npm run lint && npm run test && npm run generate
     - stage: Deploy
-      script: npm generate:prod && echo "cms.nwplus.io" >> dist/CNAME
+      script: npm run generate:prod && echo "cms.nwplus.io" >> dist/CNAME
       deploy:
         provider: pages
         skip_cleanup: true
