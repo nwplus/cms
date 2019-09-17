@@ -3,8 +3,8 @@
     <section class="hero has-background-black is-fullheight">
       <div class="centered has-text-white container">
         <p class="title has-text-white">
-          You are not an admin! If you work for nwplus, please enter the
-          password here
+          You are not an admin! <br />
+          If you work for nwPlus, please enter the password here
         </p>
         <div class="is-centered columns is-gapless">
           <div class="column is-one-quarter">

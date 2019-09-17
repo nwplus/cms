@@ -14,7 +14,9 @@
           </div>
           <div class="level-item has-text-centered">
             <div>
-              <p class="title has-text-light">nwPlus CMS</p>
+              <p class="title has-text-light">
+                nwPlus Content Management System
+              </p>
             </div>
           </div>
         </div>
