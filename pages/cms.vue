@@ -1,19 +1,35 @@
 <template>
   <div
     :class="
-      `hero sponsor-page is-fullheight ${
-        darkmode ? 'has-text-white has-background-dark' : ''
-      }`
+      `hero sponsor-page is-fullheight ${darkmodeText} ${darkmodeBackground}`
     "
   >
-    <div>
+    <div style="display: flex;">
+      <darkmodeToggle />
       <button @click="logout">Logout</button>
-      <button @click="switchMode">
-        {{ darkmode ? `light mode` : 'dark mode' }}
-      </button>
+    </div>
+    <div class="container has-text-centered">
+      <div class="level">
+        <div class="level-item has-text-centered">
+          <div>
+            <img
+              class="nwpluslogo"
+              src="~/assets/nwplus.svg"
+              alt="nwplus logo"
+            />
+          </div>
+        </div>
+        <div class="level-item has-text-centered">
+          <div>
+            <p :class="`title ${darkmodeText}`">
+              nwPlus Content Management System
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
     <div id="website-select">
-      <p>Website</p>
+      <p>Website select:</p>
       <button
         v-for="w in websites"
         :key="w.key"
@@ -23,18 +39,22 @@
         {{ w }}
       </button>
     </div>
+    <hr />
     <IntroText
       :originalIntroTexts="introTexts"
       :selectedWebsite="selectedWebsite"
     ></IntroText>
+    <hr />
     <Sponsors
       :websites="websites"
       :selected-website="selectedWebsite"
     ></Sponsors>
+    <hr />
     <Events
       :selectedWebsite="selectedWebsite"
       :originalEvents="events"
     ></Events>
+    <hr />
     <Faq
       :website="selectedWebsite"
       :listOfFaq="faq"
@@ -52,18 +72,15 @@ import fireDb from '~/plugins/firebase'
 import Faq from '~/components/FAQ.vue'
 import IntroText from '~/components/IntroText'
 import Sponsors from '~/components/Sponsors'
+import darkmodeToggle from '~/components/DarkmodeToggle'
 
 export default {
   components: {
     Events,
+    darkmodeToggle,
     IntroText,
     Sponsors,
     Faq
-  },
-  computed: {
-    darkmode () {
-      return this.$store.state.darkmode
-    },
   },
   async asyncData({ redirect }) {
     auth.onAuthStateChanged(async function(user) {
@@ -86,7 +103,6 @@ export default {
     }
   },
   methods: {
-    switchMode() {this.$store.commit('switchMode')},
     async logout() {
       try {
         await firebase.auth().signOut()
@@ -132,6 +148,13 @@ input[type='file'] {
   top: -500px;
 }
 #website-select {
-  display: flex;
+  text-align: center;
+}
+.nwpluslogo {
+  height: 30px;
+  padding-right: 30%;
+}
+.title {
+  font-size: 20px;
 }
 </style>

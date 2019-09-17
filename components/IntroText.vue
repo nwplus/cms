@@ -1,7 +1,7 @@
 <template>
   <div id="intro">
+    <p :class="`title is-4 ${darkmodeText}`">Intro</p>
     <div id="intro-header">
-      <p>Intro</p>
       <button v-if="!editingIntro" @click="startEditingIntro">Edit</button>
       <p v-if="editingIntro" id="intro-cancel" @click="cancelEditingIntro">
         Cancel
