@@ -102,7 +102,9 @@ const fireDb = {
       learnMoreLink: event.learnMoreLink || '',
       signupLink: event.signupLink || '',
       imageLink: event.imageLink || '',
-      enabled: true
+      enabled: true,
+      eventLastEditedBy: event.eventLastEditedBy,
+      eventLastEditedDate: event.eventLastEditedDate.toDateString()
     })
   },
   updateEvent: async (website, event) => {
@@ -118,7 +120,9 @@ const fireDb = {
       eventLink: event.eventLink || '',
       learnMoreLink: event.learnMoreLink || '',
       signupLink: event.signupLink || '',
-      imageLink: event.imageLink || ''
+      imageLink: event.imageLink || '',
+      eventLastEditedBy: event.eventLastEditedBy,
+      eventLastEditedDate: event.eventLastEditedDate.toDateString()
     })
   },
   updateEventEnabled: async (website, event) => {

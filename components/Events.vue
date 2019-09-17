@@ -1,6 +1,6 @@
 <template>
   <div id="events">
-    <b-modal :active.sync="addEditModal" :can-cancel="false">
+    <b-modal class="modal" :active.sync="addEditModal" :can-cancel="false">
       <div class="field">
         <label for="title">Title</label>
         <input id="title" v-model="title" />
@@ -32,7 +32,7 @@
       <button @click="save">Save</button>
       <button @click="cancel">Cancel</button>
     </b-modal>
-    <b-modal :active.sync="viewModal" :on-cancel="cancel">
+    <b-modal class="modal" :active.sync="viewModal" :on-cancel="cancel">
       <p>Title: {{ title }}</p>
       <p>Order: {{ order }}</p>
       <p>Text: {{ text }}</p>
@@ -65,7 +65,7 @@
             />
           </td>
           <td v-if="e.eventLastEditedBy && e.eventLastEditedDate">
-            {{ new Date(eventLastEditedDate) }} by {{ e.eventLastEditedBy }}
+            {{ e.eventLastEditedDate }} by {{ e.eventLastEditedBy }}
           </td>
           <td v-else>Never Modified</td>
           <td><button @click="view_event(index)">View</button></td>
@@ -80,6 +80,7 @@
 <script>
 /* eslint-disable no-console */
 
+import firebase from 'firebase/app'
 import fireDb from '../plugins/firebase'
 
 export default {
@@ -188,7 +189,9 @@ export default {
           eventLink: this.eventLink,
           learnMoreLink: this.learnMoreLink,
           signupLink: this.signupLink,
-          imageLink: this.imageLink
+          imageLink: this.imageLink,
+          eventLastEditedBy: firebase.auth().currentUser.email,
+          eventLastEditedDate: new Date(Date.now())
         })
       else
         await fireDb.updateEvent(this.selectedWebsite, {
@@ -199,7 +202,9 @@ export default {
           eventLink: this.eventLink,
           learnMoreLink: this.learnMoreLink,
           signupLink: this.signupLink,
-          imageLink: this.imageLink
+          imageLink: this.imageLink,
+          eventLastEditedBy: firebase.auth().currentUser.email,
+          eventLastEditedDate: new Date(Date.now())
         })
       this.index = undefined
       this.editing = false
@@ -230,11 +235,11 @@ export default {
   display: block;
 }
 
-#events-table-header {
+.field {
   display: flex;
 }
 
-.field {
-  display: flex;
+.modal {
+  color: white;
 }
 </style>
