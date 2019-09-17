@@ -29,7 +29,7 @@
       </div>
     </div>
     <div id="website-select">
-      <p>Website</p>
+      <p>Website select:</p>
       <button
         v-for="w in websites"
         :key="w.key"
@@ -151,7 +151,10 @@ input[type='file'] {
   text-align: center;
 }
 .nwpluslogo {
-  height: 60px;
+  height: 30px;
   padding-right: 30%;
+}
+.title {
+  font-size: 20px;
 }
 </style>

@@ -49,7 +49,7 @@
       <p>Signup Link: {{ signupLink }}</p>
       <p>Image Link: {{ imageLink }}</p>
     </b-modal>
-    <p :class="`title ${darkmodeText}`">Events</p>
+    <p :class="`title is-4 ${darkmodeText}`">Events</p>
 
     <div id="events-header">
       <button @click="add_event">Add Event</button>

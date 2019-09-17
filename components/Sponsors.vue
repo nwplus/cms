@@ -1,7 +1,9 @@
 <template>
   <div id="files-select">
     <div class="large-12 medium-12 small-12 cell">
-      <label id="files-label" :class="`title ${darkmodeText}`">Sponsors</label>
+      <label id="files-label" :class="`title is-4 ${darkmodeText}`"
+        >Sponsors</label
+      >
       <hr id="files-hr" />
       <input
         id="files"
