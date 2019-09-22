@@ -233,7 +233,7 @@ export default {
 
 <style scoped>
 #events {
-  width: 800px;
+  width: 100%;
 }
 
 #events-header {
