@@ -58,6 +58,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/eslint-module',
+    'sulpwn',
     '@nuxtjs/dotenv',
     'nuxt-buefy'
   ],
