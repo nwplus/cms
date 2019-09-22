@@ -7,13 +7,13 @@
       <div class="container has-text-centered">
         <div class="level">
           <div class="level-item has-text-centered">
-            <div>
+            <nw>
               <img
                 class="nwpluslogo"
                 src="~/assets/nwplus.svg"
                 alt="nwplus logo"
               />
-            </div>
+            </nw>
           </div>
           <div class="level-item has-text-centered">
             <div>
