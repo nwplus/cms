@@ -5,30 +5,32 @@
     <div>
       <button @click="handleAddition()">Add FAQ</button>
     </div>
-    <div v-for="faq in listOfFaq" :key="faq.id">
-      <br />
-      <input id="checkbox" v-model="faq.data.selected" type="checkbox" />
-      Question:
-      {{ faq.data.question }}
-      <br />
-      Category:
-      {{ faq.data.category }}
-      <br />
-      Answer:
-      {{ faq.data.answer }}
-      <br />
-      Timestamp:
-      {{ new Date(faq.data.timestamp.toDate()) }}
-      <br />
-      Last edited by:
-      {{ faq.data.user }}
-      <br />
-      <button>
-        Details
-      </button>
-      <button @click="handleEdit(faq)">
-        Edit
-      </button>
+    <div class="FAQs">
+      <div v-for="faq in listOfFaq" :key="faq.id">
+        <br />
+        <input id="checkbox" v-model="faq.data.selected" type="checkbox" />
+        Question:
+        {{ faq.data.question }}
+        <br />
+        Category:
+        {{ faq.data.category }}
+        <br />
+        Answer:
+        {{ faq.data.answer }}
+        <br />
+        Timestamp:
+        {{ new Date(faq.data.timestamp.toDate()) }}
+        <br />
+        Last edited by:
+        {{ faq.data.user }}
+        <br />
+        <button>
+          Details
+        </button>
+        <button @click="handleEdit(faq)">
+          Edit
+        </button>
+      </div>
     </div>
     <div v-if="editMode" id="editPanel">
       Edit
@@ -134,3 +136,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+.FAQs {
+  height: 500px;
+  overflow-y: auto;
+}
+</style>
