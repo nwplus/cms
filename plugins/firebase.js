@@ -34,6 +34,23 @@ const fireDb = {
     }
     return false
   },
+  getFlags: async () => {
+    const websites = await fireDb.getWebsites()
+    const featureFlags = {}
+    for (const website of websites) {
+      const websiteDataRef = await db
+        .collection(webCollection)
+        .doc(website)
+        .get()
+      const websiteData = websiteDataRef.data()
+      featureFlags[website] = websiteData.featureFlags
+    }
+    return featureFlags
+  },
+  updateFlags: async (website, flags) => {
+    const websiteDataRef = await db.collection(webCollection).doc(website)
+    await websiteDataRef.update({ featureFlags: flags })
+  },
   getWebsites: async () => {
     const ref = db.collection(webCollection)
     return (await ref.get()).docs.map(doc => doc.id)
