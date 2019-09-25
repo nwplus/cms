@@ -11,11 +11,9 @@
       <button v-if="editing" @click="saveInfo">Save</button>
       <div v-for="(flag, key) in flags" :key="key" class="flags">
         <p>{{ key.replace('Flag', '') }}:</p>
-        <select v-if="editing">
-          <option :selected="flag" @click="flags[key] = true">Enabled</option>
-          <option :selected="!flag" @click="flags[key] = false"
-            >Disabled</option
-          >
+        <select v-if="editing" :id="key" @change="updateFlags">
+          <option :selected="flag" :value="true">Enabled</option>
+          <option :selected="!flag" :value="false">Disabled</option>
         </select>
         <p v-if="!editing">{{ flag ? 'Enabled ✅' : 'Disabled ❌' }}</p>
       </div>
@@ -53,6 +51,9 @@ export default {
     }
   },
   methods: {
+    updateFlags(event) {
+      this.flags[event.target.id] = event.target.value === "true"
+    },
     async saveInfo() {
       await fireDb.updateFlags(this.website, this.flags)
       this.editing = false

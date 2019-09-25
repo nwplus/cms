@@ -48,7 +48,7 @@ const fireDb = {
     return featureFlags
   },
   updateFlags: async (website, flags) => {
-    const websiteDataRef = await db.collection(webCollection).doc(website)
+    const websiteDataRef = db.collection(webCollection).doc(website)
     await websiteDataRef.update({ featureFlags: flags })
   },
   getWebsites: async () => {
