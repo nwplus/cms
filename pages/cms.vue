@@ -40,6 +40,8 @@
       </button>
     </div>
     <hr />
+    <Flags :flags="featureFlags[selectedWebsite]" :website="selectedWebsite" />
+    <hr />
     <IntroText
       :originalIntroTexts="introTexts"
       :selectedWebsite="selectedWebsite"
@@ -73,6 +75,7 @@ import Faq from '~/components/FAQ.vue'
 import IntroText from '~/components/IntroText'
 import Sponsors from '~/components/Sponsors'
 import darkmodeToggle from '~/components/DarkmodeToggle'
+import Flags from '~/components/Flags'
 
 export default {
   components: {
@@ -80,7 +83,8 @@ export default {
     darkmodeToggle,
     IntroText,
     Sponsors,
-    Faq
+    Faq,
+    Flags
   },
   async asyncData({ redirect }) {
     auth.onAuthStateChanged(async function(user) {
@@ -92,6 +96,7 @@ export default {
     const listOfWebsites = await fireDb.getWebsites()
     const introTexts = await fireDb.getIntroText()
     const events = await fireDb.getEvents()
+    const flags = await fireDb.getFlags()
     const selectedWebsite = listOfWebsites[0]
     return {
       websites: listOfWebsites,
@@ -99,7 +104,8 @@ export default {
       events: events,
       selectedWebsite: selectedWebsite,
       files: [],
-      faq: []
+      faq: [],
+      featureFlags: flags
     }
   },
   methods: {
