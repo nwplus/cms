@@ -35,8 +35,8 @@
 <script>
 /* eslint-disable no-console */
 import firebase from 'firebase/app'
+import darkmodeToggle from '~/components/DarkmodeToggle.vue'
 import fireDb, { auth } from '../plugins/firebase'
-import darkmodeToggle from '~/components/DarkmodeToggle'
 
 export default {
   name: 'Login',
