@@ -8,6 +8,7 @@ const envVars =
           FIREBASE_DATABASE_URL: 'https://nwhacks-2019.firebaseio.com',
           FIREBASE_PROJECT_ID: 'nwhacks-2019',
           FIREBASE_STORAGE_BUCKET: 'nwhacks-2019',
+          F_REBASE_MEASUREMENT_ID: 'G-HVDSYY5XNS',
           FIREBASE_MESSAGING_SENDER_ID: '98283589440',
           RECAPTCHA_SITE_KEY: '6Lf-PXcUAAAAAKqB-M3SNbBz5D67TtHAo94_YwyJ',
           signUpUrl:
