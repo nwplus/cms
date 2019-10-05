@@ -6,6 +6,8 @@
   </div>
 </template>
 <script>
+import { analytics } from '~/plugins/firebase'
+
 export default {
   computed: {
     darkmode() {
@@ -14,6 +16,9 @@ export default {
   },
   methods: {
     switchMode() {
+      analytics.logEvent('Switched mode', {
+        mode: `${this.darkmode ? 'Light' : 'Dark'}`
+      })
       this.$store.commit('switchMode')
     }
   }

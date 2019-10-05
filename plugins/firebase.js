@@ -3,6 +3,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
 import 'firebase/storage'
+import 'firebase/analytics'
 
 if (!firebase.apps.length) {
   const config = {
@@ -11,6 +12,7 @@ if (!firebase.apps.length) {
     databaseURL: process.env.FIREBASE_DATABASE_URL,
     projectId: process.env.FIREBASE_PROJECT_ID,
     measurementId: 'G-HVDSYY5XNS',
+    appId: '1:98283589440:web:c15c6169d0098fb15d34a5',
     storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
     messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID
   }
@@ -18,6 +20,7 @@ if (!firebase.apps.length) {
 }
 
 export const auth = firebase.auth()
+export const analytics = firebase.analytics()
 auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
 
 const db = firebase.firestore()
