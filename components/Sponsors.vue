@@ -21,6 +21,10 @@
         <p>Sponsor Url</p>
         <input v-model="file.url" />
         <p class="remove-file" @click="removeFile(key)">Remove</p>
+        <div v-for="rank in ranks" :key="ranks.indexOf(rank)">
+          <input type="radio" :value="rank" v-model="file.selectedRank" />
+          {{ rank }}
+        </div>
       </div>
     </div>
     <br />
@@ -33,6 +37,7 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
 import fireDb from '~/plugins/firebase'
 
 export default {
@@ -51,6 +56,7 @@ export default {
   },
   data() {
     return {
+      ranks: ['kilo', 'mega', 'giga', 'tera', 'in-kind'],
       files: []
     }
   },
@@ -66,6 +72,7 @@ export default {
       for (let i = 0; i < uploadedFiles.length; i++) {
         uploadedFiles[i].sponsorName = ''
         uploadedFiles[i].url = ''
+        uploadedFiles[i].selectedRank = ''
         this.files.push(uploadedFiles[i])
       }
     },
