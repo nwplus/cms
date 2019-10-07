@@ -69,7 +69,7 @@
         <input v-model="file.url" />
         <p class="remove-file" @click="removeFile(key)">Remove</p>
         <div v-for="rank in ranks" :key="ranks.indexOf(rank)">
-          <input type="radio" :value="rank" v-model="file.selectedRank" />
+          <input type="radio" v-model="file.selectedRank" :value="rank" />
           {{ rank }}
         </div>
       </div>
@@ -200,6 +200,7 @@ table th:not([align]) {
 }
 .sponsorImage {
   width: 20%;
+  background-color: white;
 }
 .sponsors {
   height: 350px;
