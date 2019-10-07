@@ -185,7 +185,8 @@ const fireDb = {
     await ref.add({
       image: sponsor.image,
       name: sponsor.name,
-      url: sponsor.url
+      url: sponsor.url,
+      rank: sponsor.rank
     })
   },
   async uploadImages(website, files) {
@@ -203,7 +204,8 @@ const fireDb = {
         await this.addSponsorInformation(website, {
           image: file.name,
           name: file.sponsorName.trim(),
-          url: file.url.trim()
+          url: file.url.trim(),
+          rank: file.selectedRank
         })
       } catch (e) {
         const ref = storage.ref(`${website}/${file.name}`)
