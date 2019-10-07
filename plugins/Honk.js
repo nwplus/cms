@@ -1,13 +1,12 @@
 /* eslint-disable no-console */
 import Vue from 'vue'
+const audio = new Audio(
+  'https://res.cloudinary.com/jlengstorf/video/upload/q_auto/v1569957993/honk-sound.mp3'
+)
 const honkify = (elementToHonkify = false) => {
   if (typeof window === 'undefined') {
     return
   }
-  const audio = new Audio(
-    'https://res.cloudinary.com/jlengstorf/video/upload/q_auto/v1569957993/honk-sound.mp3'
-  )
-
   /**
    * if the platform is iOS Safari, we quickly play, pause, reset the audio object
    * this allows it to be playable the next time an user clicks a link
@@ -43,5 +42,10 @@ Vue.mixin({
   updated() {
     const elementList = document.querySelectorAll('button')
     honkify(elementList)
+  },
+  methods: {
+    honk() {
+      audio.play()
+    }
   }
 })
