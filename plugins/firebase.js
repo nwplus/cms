@@ -188,6 +188,16 @@ const fireDb = {
       url: sponsor.url
     })
   },
+  async deleteSponsor(website, id, image) {
+    const ref = storage.ref(`${website}/${image}`)
+    await ref.delete()
+    const sponsorRef = db
+      .collection(webCollection)
+      .doc(website)
+      .collection('Sponsors')
+      .doc(id)
+    sponsorRef.delete()
+  },
   async uploadImages(website, files) {
     const failedUploads = []
     for (const file of files) {
@@ -213,6 +223,28 @@ const fireDb = {
       }
     }
     return failedUploads
+  },
+  getSponsors: async () => {
+    const websites = await fireDb.getWebsites()
+    const sponsors = {}
+    for (const website of websites) {
+      const data = await fireDb.get(website, 'Sponsors')
+      if (data.length > 0) {
+        console.log(website)
+        await Promise.all(
+          data.map(async sponsor => {
+            sponsor.data.imageUrl = await fireDb.getImageUrl(
+              website,
+              sponsor.data.image
+            )
+          })
+        )
+        sponsors[website] = data
+      } else {
+        sponsors[website] = {}
+      }
+    }
+    return sponsors
   },
   get: async (webDocument, collection) => {
     if (collection === webDocument) {
@@ -254,6 +286,11 @@ const fireDb = {
   },
   getTimestamp: () => {
     return firebase.firestore.Timestamp.now()
+  },
+  getImageUrl: async (WebDocument, imageref) => {
+    const image = storage.ref(`${WebDocument}/${imageref}`)
+    const url = await image.getDownloadURL()
+    return url
   }
 }
 

@@ -5,6 +5,53 @@
         >Sponsors</label
       >
       <hr id="files-hr" />
+      <div v-if="sponsors[selectedWebsite].length > 0" class="sponsors">
+        <table class="sponsortable">
+          <thead>
+            <tr>
+              <th :class="darkmodeText">Image</th>
+              <th :class="darkmodeText">Sponsor</th>
+              <th :class="darkmodeText">URL</th>
+              <th :class="darkmodeText">Type</th>
+              <th :class="darkmodeText">Delete</th>
+            </tr>
+          </thead>
+          <tr
+            v-for="sponsor in sponsors[selectedWebsite]"
+            :key="sponsor.id"
+            class="sponsorlist"
+          >
+            <td class="sponsorImage">
+              <img :src="sponsor.data.imageUrl" />
+            </td>
+            <td>
+              {{ sponsor.data.name }}
+            </td>
+            <td>
+              <a href="sponsor.data.url">{{ sponsor.data.url }} </a>
+            </td>
+            <td>
+              {{ sponsor.data.rank }}
+            </td>
+            <td>
+              <button
+                @click="
+                  deleteSponsor(
+                    sponsor.id,
+                    sponsor.data.image,
+                    sponsor.data.name
+                  )
+                "
+              >
+                ❌
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div v-else>Currently no Sponsors!</div>
+      <hr id="files-hr" />
+      <p :class="`title is-4 ${darkmodeText}`">Upload</p>
       <input
         id="files"
         ref="files"
@@ -33,6 +80,8 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
+
 import fireDb from '~/plugins/firebase'
 
 export default {
@@ -42,6 +91,18 @@ export default {
       type: Array,
       default() {
         return []
+      }
+    },
+    sponsors: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    reload: {
+      type: Function,
+      default() {
+        return () => {}
       }
     },
     selectedWebsite: {
@@ -55,6 +116,13 @@ export default {
     }
   },
   methods: {
+    async deleteSponsor(id, image, name) {
+      const response = confirm(`Are you sure you want to delete ${name}?`)
+      if (response) {
+        await fireDb.deleteSponsor(this.selectedWebsite, id, image)
+        await this.reload()
+      }
+    },
     addFiles() {
       this.$refs.files.click()
     },
@@ -83,7 +151,8 @@ export default {
         for (const file of failedUploads) alertString += `\n${file}`
         alert(alertString)
       }
-      window.location.reload(true)
+      await this.reload()
+      this.files = []
     }
   }
 }
@@ -110,5 +179,25 @@ input[type='file'] {
 .remove-file {
   color: red;
   cursor: pointer;
+}
+
+.sponsortable {
+  width: 80%;
+}
+table td,
+table th {
+  vertical-align: middle;
+  border: 1px solid grey;
+}
+table td:not([align]),
+table th:not([align]) {
+  text-align: center;
+}
+.sponsorImage {
+  width: 20%;
+}
+.sponsors {
+  height: 350px;
+  overflow-y: auto;
 }
 </style>
