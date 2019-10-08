@@ -24,23 +24,29 @@
         Last edited by:
         {{ faq.data.user }}
         <br />
-        <button>
-          Details
-        </button>
         <button @click="handleEdit(faq)">
           Edit
         </button>
       </div>
     </div>
-    <div v-if="editMode" id="editPanel">
-      Edit
+    <b-modal class="has-text-white" :active.sync="editMode" :can-cancel="false">
+      <p :class="`title is-4 has-text-white`">Edit</p>
       <br />
+      Selected?
       <input id="checkbox" v-model="data.selected" type="checkbox" />
       <br />
+      Question:
       <input v-model="data.question" />
       <br />
-      <input v-model="data.category" />
+      Catagory:
+      <select v-model="data.category">
+        <option disabled value="">Please select one</option>
+        <option>General</option>
+        <option>Teams</option>
+        <option>Logistics</option>
+      </select>
       <br />
+      Answer:
       <input v-model="data.answer" />
       <br />
       <button @click="handleSave()">
@@ -48,7 +54,7 @@
       </button>
       <button @click="handleRemoval()">Delete</button>
       <button @click="editMode = !editMode">Exit</button>
-    </div>
+    </b-modal>
   </div>
 </template>
 <style scoped>
