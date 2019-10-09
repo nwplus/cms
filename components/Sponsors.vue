@@ -69,7 +69,7 @@
         <input v-model="file.url" />
         <p class="remove-file" @click="removeFile(key)">Remove</p>
         <div v-for="rank in ranks" :key="ranks.indexOf(rank)">
-          <input type="radio" v-model="file.selectedRank" :value="rank" />
+          <input v-model="file.selectedRank" type="radio" :value="rank" />
           {{ rank }}
         </div>
       </div>
@@ -123,8 +123,10 @@ export default {
     async deleteSponsor(id, image, name) {
       const response = confirm(`Are you sure you want to delete ${name}?`)
       if (response) {
+        this.$nuxt.$loading.start()
         await fireDb.deleteSponsor(this.selectedWebsite, id, image)
         await this.reload()
+        this.$nuxt.$loading.finish()
       }
     },
     addFiles() {
@@ -143,6 +145,7 @@ export default {
       }
     },
     async save() {
+      this.$nuxt.$loading.start()
       if (!this.websites.includes(this.selectedWebsite)) {
         alert('Please select a website')
         return
@@ -157,6 +160,8 @@ export default {
         alert(alertString)
       }
       await this.reload()
+      this.$nuxt.$loading.finish()
+
       this.files = []
     }
   }

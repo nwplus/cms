@@ -43,11 +43,10 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: '~/components/loading-icon.vue',
+  loading: '~/components/loading.vue',
   /*
    ** Global CSS
-   */
-  css: [],
+   */ css: [],
   /*
    ** Plugins to load before mounting the App
    */
