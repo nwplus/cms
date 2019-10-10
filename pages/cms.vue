@@ -50,6 +50,8 @@
     <Sponsors
       :websites="websites"
       :selected-website="selectedWebsite"
+      :sponsors="sponsorsList"
+      :reload="reloadSponsors"
     ></Sponsors>
     <hr />
     <Events
@@ -98,6 +100,7 @@ export default {
     const events = await fireDb.getEvents()
     const flags = await fireDb.getFlags()
     const selectedWebsite = listOfWebsites[0]
+    const sponsorsList = await fireDb.getSponsors()
     return {
       websites: listOfWebsites,
       introTexts: introTexts,
@@ -105,10 +108,14 @@ export default {
       selectedWebsite: selectedWebsite,
       files: [],
       faq: [],
-      featureFlags: flags
+      featureFlags: flags,
+      sponsorsList
     }
   },
   methods: {
+    async reloadSponsors() {
+      this.sponsorsList = await fireDb.getSponsors()
+    },
     async logout() {
       try {
         await firebase.auth().signOut()

@@ -65,12 +65,15 @@ export default {
           .auth()
           .setPersistence(firebase.auth.Auth.Persistence.SESSION)
         const res = await auth.signInWithPopup(this.provider)
+        this.honk()
+        setTimeout(this.honk, 450)
         if (!(await fireDb.isAdmin(res.user.email))) {
           this.$router.push('/signUp')
           return
         }
         this.$router.push('/cms')
       } catch (e) {
+        this.buttonState = ''
         if (e.code === 'permission-denied') this.$router.push('/signUp')
         else if (e.code === 'auth/web-storage-unsupported') {
           this.error_message = 'Please enable 3rd party cookies'
