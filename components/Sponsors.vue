@@ -68,10 +68,11 @@
         <p>Sponsor Url</p>
         <input v-model="file.url" />
         <p class="remove-file" @click="removeFile(key)">Remove</p>
-        <div v-for="rank in ranks" :key="ranks.indexOf(rank)">
+        <div v-for="(rank, key) in ranks" :key="key">
           <input v-model="file.selectedRank" type="radio" :value="rank" />
           {{ rank }}
         </div>
+        <!-- {{ files }} uncomment to debug -->
       </div>
     </div>
     <br />
