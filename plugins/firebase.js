@@ -215,7 +215,7 @@ const fireDb = {
           image: file.name,
           name: file.sponsorName.trim(),
           url: file.url.trim(),
-          rank: file.selectedRank
+          rank: file.rank
         })
       } catch (e) {
         const ref = storage.ref(`${website}/${file.name}`)
@@ -232,7 +232,6 @@ const fireDb = {
     for (const website of websites) {
       const data = await fireDb.get(website, 'Sponsors')
       if (data.length > 0) {
-        console.log(website)
         await Promise.all(
           data.map(async sponsor => {
             sponsor.data.imageUrl = await fireDb.getImageUrl(

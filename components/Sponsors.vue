@@ -63,15 +63,16 @@
     <div class="large-12 medium-12 small-12 cell">
       <div v-for="(file, key) in files" :key="key" class="file-listing">
         <p class="file">{{ file.name }}</p>
-        <p>Sponsor Name</p>
+        <p>Sponsor Name:</p>
         <input v-model="file.sponsorName" />
-        <p>Sponsor Url</p>
+        <p>Sponsor Url:</p>
         <input v-model="file.url" />
-        <p class="remove-file" @click="removeFile(key)">Remove</p>
-        <div v-for="(rank, key) in ranks" :key="key">
-          <input v-model="selectedRank" type="radio" :value="rank" />
+        <p>Rank:</p>
+        <div v-for="(rank, rankKey) in ranks" :key="rankKey">
+          <input v-model="file.rank" :name="key" type="radio" :value="rank" />
           {{ rank }}
         </div>
+        <p class="remove-file" @click="removeFile(key)">Remove</p>
         <!-- {{ files }} uncomment to debug -->
       </div>
     </div>
@@ -142,9 +143,10 @@ export default {
       for (let i = 0; i < uploadedFiles.length; i++) {
         uploadedFiles[i].sponsorName = ''
         uploadedFiles[i].url = ''
-        uploadedFiles[i].selectedRank = ''
+        uploadedFiles[i].rank = ''
         this.files.push(uploadedFiles[i])
       }
+      console.log(this.files)
     },
     async save() {
       this.$nuxt.$loading.start()
@@ -178,15 +180,20 @@ input[type='file'] {
 .file-listing {
   display: flex;
 }
+
+.file-listing * {
+  padding-right: 1%;
+}
+
 #files-hr {
   width: 15vw;
 }
 .file {
-  width: 10vw;
+  width: 10%;
+  margin-right: 1%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin: 0 1vw 0 0;
 }
 .remove-file {
   color: red;
