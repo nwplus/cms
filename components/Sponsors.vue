@@ -69,7 +69,7 @@
         <input v-model="file.url" />
         <p class="remove-file" @click="removeFile(key)">Remove</p>
         <div v-for="(rank, key) in ranks" :key="key">
-          <input v-model="file.selectedRank" type="radio" :value="rank" />
+          <input v-model="selectedRank" type="radio" :value="rank" />
           {{ rank }}
         </div>
         <!-- {{ files }} uncomment to debug -->
@@ -117,7 +117,8 @@ export default {
   data() {
     return {
       ranks: ['kilo', 'mega', 'giga', 'tera', 'in-kind'],
-      files: []
+      files: [],
+      selectedRank: ''
     }
   },
   methods: {
