@@ -52,6 +52,7 @@
       <div v-else>Currently no Sponsors!</div>
       <hr id="files-hr" />
       <p :class="`title is-4 ${darkmodeText}`">Upload</p>
+      <p :class="darkmodeText">your images must have different file names!</p>
       <input
         id="files"
         ref="files"
@@ -63,15 +64,17 @@
     <div class="large-12 medium-12 small-12 cell">
       <div v-for="(file, key) in files" :key="key" class="file-listing">
         <p class="file">{{ file.name }}</p>
-        <p>Sponsor Name</p>
+        <p>Sponsor Name:</p>
         <input v-model="file.sponsorName" />
-        <p>Sponsor Url</p>
+        <p>Sponsor Url:</p>
         <input v-model="file.url" />
-        <p class="remove-file" @click="removeFile(key)">Remove</p>
-        <div v-for="rank in ranks" :key="ranks.indexOf(rank)">
-          <input v-model="file.selectedRank" type="radio" :value="rank" />
+        <p>Rank:</p>
+        <div v-for="(rank, rankKey) in ranks" :key="rankKey">
+          <input v-model="file.rank" :name="key" type="radio" :value="rank" />
           {{ rank }}
         </div>
+        <p class="remove-file" @click="removeFile(key)">Remove</p>
+        <!-- {{ files }} uncomment to debug -->
       </div>
     </div>
     <br />
@@ -116,7 +119,8 @@ export default {
   data() {
     return {
       ranks: ['kilo', 'mega', 'giga', 'tera', 'in-kind'],
-      files: []
+      files: [],
+      selectedRank: ''
     }
   },
   methods: {
@@ -124,9 +128,16 @@ export default {
       const response = confirm(`Are you sure you want to delete ${name}?`)
       if (response) {
         this.$nuxt.$loading.start()
-        await fireDb.deleteSponsor(this.selectedWebsite, id, image)
-        await this.reload()
-        this.$nuxt.$loading.finish()
+        const success = await fireDb.deleteSponsor(this.selectedWebsite, image)
+        if (!success) {
+          if (confirm('Failed to delete sponsor.')) {
+            await this.reload()
+            this.$nuxt.$loading.finish()
+          }
+        } else {
+          await this.reload()
+          this.$nuxt.$loading.finish()
+        }
       }
     },
     addFiles() {
@@ -140,9 +151,10 @@ export default {
       for (let i = 0; i < uploadedFiles.length; i++) {
         uploadedFiles[i].sponsorName = ''
         uploadedFiles[i].url = ''
-        uploadedFiles[i].selectedRank = ''
+        uploadedFiles[i].rank = ''
         this.files.push(uploadedFiles[i])
       }
+      console.log(this.files)
     },
     async save() {
       this.$nuxt.$loading.start()
@@ -157,12 +169,16 @@ export default {
       if (failedUploads.length > 0) {
         let alertString = 'Failed to upload the following files:'
         for (const file of failedUploads) alertString += `\n${file}`
-        alert(alertString)
+        if (confirm(alertString)) {
+          await this.reload()
+          this.$nuxt.$loading.finish()
+          this.files = []
+        }
+      } else {
+        await this.reload()
+        this.$nuxt.$loading.finish()
+        this.files = []
       }
-      await this.reload()
-      this.$nuxt.$loading.finish()
-
-      this.files = []
     }
   }
 }
@@ -176,15 +192,20 @@ input[type='file'] {
 .file-listing {
   display: flex;
 }
+
+.file-listing * {
+  padding-right: 1%;
+}
+
 #files-hr {
   width: 15vw;
 }
 .file {
-  width: 10vw;
+  width: 10%;
+  margin-right: 1%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin: 0 1vw 0 0;
 }
 .remove-file {
   color: red;

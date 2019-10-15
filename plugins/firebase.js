@@ -189,15 +189,24 @@ const fireDb = {
       rank: sponsor.rank
     })
   },
-  async deleteSponsor(website, id, image) {
+  async deleteSponsor(website, image) {
+    try {
+      const sponsors = await db
+        .collection(webCollection)
+        .doc(website)
+        .collection('Sponsors')
+        .get()
+      sponsors.forEach(async sponsor => {
+        if (sponsor.data().image === image) {
+          await sponsor.ref.delete()
+        }
+      })
+    } catch (e) {
+      return false
+    }
     const ref = storage.ref(`${website}/${image}`)
     await ref.delete()
-    const sponsorRef = db
-      .collection(webCollection)
-      .doc(website)
-      .collection('Sponsors')
-      .doc(id)
-    sponsorRef.delete()
+    return true
   },
   async uploadImages(website, files) {
     const failedUploads = []
@@ -208,14 +217,14 @@ const fireDb = {
       } catch (e) {
         console.log(e)
         failedUploads.push(file.name)
+        continue
       }
-
       try {
         await this.addSponsorInformation(website, {
           image: file.name,
           name: file.sponsorName.trim(),
           url: file.url.trim(),
-          rank: file.selectedRank
+          rank: file.rank
         })
       } catch (e) {
         const ref = storage.ref(`${website}/${file.name}`)
@@ -232,7 +241,6 @@ const fireDb = {
     for (const website of websites) {
       const data = await fireDb.get(website, 'Sponsors')
       if (data.length > 0) {
-        console.log(website)
         await Promise.all(
           data.map(async sponsor => {
             sponsor.data.imageUrl = await fireDb.getImageUrl(
