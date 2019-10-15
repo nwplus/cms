@@ -208,8 +208,8 @@ const fireDb = {
       } catch (e) {
         console.log(e)
         failedUploads.push(file.name)
+        continue
       }
-
       try {
         await this.addSponsorInformation(website, {
           image: file.name,
