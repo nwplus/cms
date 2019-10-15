@@ -161,12 +161,16 @@ export default {
       if (failedUploads.length > 0) {
         let alertString = 'Failed to upload the following files:'
         for (const file of failedUploads) alertString += `\n${file}`
-        alert(alertString)
+        if (confirm(alertString)) {
+          await this.reload()
+          this.$nuxt.$loading.finish()
+          this.files = []
+        }
+      } else {
+        await this.reload()
+        this.$nuxt.$loading.finish()
+        this.files = []
       }
-      await this.reload()
-      this.$nuxt.$loading.finish()
-
-      this.files = []
     }
   }
 }
