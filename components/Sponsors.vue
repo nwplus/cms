@@ -28,7 +28,7 @@
               {{ sponsor.data.name }}
             </td>
             <td>
-              <a href="sponsor.data.url">{{ sponsor.data.url }} </a>
+              <a :href="formatURL(sponsor.data.url)">{{ sponsor.data.url }} </a>
             </td>
             <td>
               {{ sponsor.data.rank }}
@@ -124,6 +124,13 @@ export default {
     }
   },
   methods: {
+    formatURL(url) {
+      if (!url.includes('http://')) {
+        return `http://${url}`
+      } else {
+        return url
+      }
+    },
     async deleteSponsor(id, image, name) {
       const response = confirm(`Are you sure you want to delete ${name}?`)
       if (response) {
