@@ -127,9 +127,20 @@ export default {
       const response = confirm(`Are you sure you want to delete ${name}?`)
       if (response) {
         this.$nuxt.$loading.start()
-        await fireDb.deleteSponsor(this.selectedWebsite, id, image)
-        await this.reload()
-        this.$nuxt.$loading.finish()
+        const success = await fireDb.deleteSponsor(
+          this.selectedWebsite,
+          id,
+          image
+        )
+        if (!success) {
+          if (confirm('Failed to delete sponsor.')) {
+            await this.reload()
+            this.$nuxt.$loading.finish()
+          }
+        } else {
+          await this.reload()
+          this.$nuxt.$loading.finish()
+        }
       }
     },
     addFiles() {

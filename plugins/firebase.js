@@ -190,14 +190,19 @@ const fireDb = {
     })
   },
   async deleteSponsor(website, id, image) {
+    try {
+      const sponsorRef = db
+        .collection(webCollection)
+        .doc(website)
+        .collection('Sponsors')
+        .doc(id)
+      sponsorRef.delete()
+    } catch (e) {
+      return false
+    }
     const ref = storage.ref(`${website}/${image}`)
     await ref.delete()
-    const sponsorRef = db
-      .collection(webCollection)
-      .doc(website)
-      .collection('Sponsors')
-      .doc(id)
-    sponsorRef.delete()
+    return true
   },
   async uploadImages(website, files) {
     const failedUploads = []
