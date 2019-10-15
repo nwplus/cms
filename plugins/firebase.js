@@ -189,14 +189,18 @@ const fireDb = {
       rank: sponsor.rank
     })
   },
-  async deleteSponsor(website, id, image) {
+  async deleteSponsor(website, image) {
     try {
-      const sponsorRef = db
+      const sponsors = await db
         .collection(webCollection)
         .doc(website)
         .collection('Sponsors')
-        .doc(id)
-      sponsorRef.delete()
+        .get()
+      sponsors.forEach(async sponsor => {
+        if (sponsor.data().image === image) {
+          await sponsor.ref.delete()
+        }
+      })
     } catch (e) {
       return false
     }

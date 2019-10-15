@@ -52,6 +52,7 @@
       <div v-else>Currently no Sponsors!</div>
       <hr id="files-hr" />
       <p :class="`title is-4 ${darkmodeText}`">Upload</p>
+      <p :class="darkmodeText">your images must have different file names!</p>
       <input
         id="files"
         ref="files"
@@ -127,11 +128,7 @@ export default {
       const response = confirm(`Are you sure you want to delete ${name}?`)
       if (response) {
         this.$nuxt.$loading.start()
-        const success = await fireDb.deleteSponsor(
-          this.selectedWebsite,
-          id,
-          image
-        )
+        const success = await fireDb.deleteSponsor(this.selectedWebsite, image)
         if (!success) {
           if (confirm('Failed to delete sponsor.')) {
             await this.reload()
