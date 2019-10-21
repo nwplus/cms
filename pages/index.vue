@@ -35,7 +35,7 @@
 <script>
 /* eslint-disable no-console */
 import firebase from 'firebase/app'
-import fireDb, { auth } from '../plugins/firebase'
+import fireDb, { auth, analytics } from '../plugins/firebase'
 import darkmodeToggle from '~/components/DarkmodeToggle.vue'
 
 export default {
@@ -68,9 +68,11 @@ export default {
         this.honk()
         setTimeout(this.honk, 450)
         if (!(await fireDb.isAdmin(res.user.email))) {
+          analytics.logEvent('notAdmin', res.user.email)
           this.$router.push('/signUp')
           return
         }
+        analytics.logEvent('login', res.user.email)
         this.$router.push('/cms')
       } catch (e) {
         this.buttonState = ''
