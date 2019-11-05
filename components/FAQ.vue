@@ -198,7 +198,7 @@ export default {
     handleAddition() {
       this.currentFaq = null
       this.addMode = true
-      this.data.selected = false
+      this.data.selected = true
       this.data.question = 'Sample question'
       this.data.category = 'placeholder'
       this.data.answer = 'Sample answer'
