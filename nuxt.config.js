@@ -44,9 +44,7 @@ export default {
    ** Customize the progress-bar color
    */
   loading: '~/components/loading.vue',
-  /*
-   ** Global CSS
-   */ css: [],
+  css: [{ src: 'bulma/bulma.sass', lang: 'sass' }],
   /*
    ** Plugins to load before mounting the App
    */
@@ -60,7 +58,12 @@ export default {
     '@nuxtjs/eslint-module',
     'sulpwn',
     '@nuxtjs/dotenv',
-    'nuxt-buefy'
+    [
+      'nuxt-buefy',
+      {
+        css: false
+      }
+    ]
   ],
   /*
    ** Axios module configuration

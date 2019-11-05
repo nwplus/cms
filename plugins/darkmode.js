@@ -7,6 +7,9 @@ Vue.mixin({
     },
     darkmodeText() {
       return this.$store.state.darkmode ? 'has-text-light' : ''
+    },
+    isLight() {
+      return this.$store.state.darkmode ? 'is-dark' : 'is-light'
     }
   }
 })
