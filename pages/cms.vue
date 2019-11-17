@@ -4,6 +4,13 @@
       `hero sponsor-page is-fullheight ${darkmodeText} ${darkmodeBackground}`
     "
   >
+    <div id="applicantNumber" :class="`${darkmodeText}`">
+      <div style="margin-top: 10%; display: inline-block;">
+        <span style="margin: auto; top: 20%;">
+          nwHacks Applicants: {{ applicantCount }}
+        </span>
+      </div>
+    </div>
     <div style="display: flex;">
       <darkmodeToggle />
       <button @click="logout">Logout</button>
@@ -88,6 +95,11 @@ export default {
     Faq,
     Flags
   },
+  data() {
+    return {
+      applicantCount: 0
+    }
+  },
   async asyncData({ redirect }) {
     auth.onAuthStateChanged(async function(user) {
       if (!user) {
@@ -112,7 +124,14 @@ export default {
       sponsorsList
     }
   },
+  mounted() {
+    fireDb.getNumberOfApplicants(this.setApplicantNumber)
+  },
   methods: {
+    setApplicantNumber(snapshot) {
+      console.log(snapshot)
+      this.applicantCount = snapshot.docs.length
+    },
     async reloadSponsors() {
       this.sponsorsList = await fireDb.getSponsors()
     },
@@ -155,7 +174,21 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "~bulma/sass/utilities/_all";
+#applicantNumber {
+  position: absolute;
+  right: 0.5%;
+  font-size: 1.5em;
+  height: 20%;
+  width: 25vw;
+  text-align: center;
+  @include until($tablet) {
+    width: 15vw;
+    right: 5%;
+    top: 2%;
+  }
+}
 input[type='file'] {
   position: absolute;
   top: -500px;
