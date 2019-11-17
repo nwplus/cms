@@ -28,6 +28,9 @@ const storage = firebase.storage()
 const webCollection = 'Website_content'
 
 const fireDb = {
+  getNumberOfApplicants: callback => {
+    db.collection('hacker_email_2020').onSnapshot(callback)
+  },
   isAdmin: async email => {
     const ref = db.collection('admins')
     const admins = (await ref.get()).docs
