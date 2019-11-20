@@ -22,7 +22,6 @@ if (!firebase.apps.length) {
 
 export const auth = firebase.auth()
 export const analytics = firebase.analytics()
-auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
 
 const db = firebase.firestore()
 const storage = firebase.storage()
