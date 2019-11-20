@@ -46,6 +46,15 @@
         {{ w }}
       </button>
     </div>
+    <div
+      v-if="selectedWebsite === 'NwHacks_2020'"
+      style="margin-top:1%;"
+      class="has-text-centered"
+    >
+      <button class="button is-two-thirds is-info" @click="getApplicantCsv">
+        Download Applicants CSV
+      </button>
+    </div>
     <hr />
     <Flags :flags="featureFlags[selectedWebsite]" :website="selectedWebsite" />
     <hr />
@@ -131,6 +140,22 @@ export default {
     setApplicantNumber(snapshot) {
       console.log(snapshot)
       this.applicantCount = snapshot.docs.length
+    },
+    async getApplicantCsv() {
+      const csv = await fireDb.applicantToCSV()
+      const blob = new Blob([csv], {
+        type: 'text/csv'
+      })
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      // the filename you want
+      a.download = 'Applicants.csv';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a)
     },
     async reloadSponsors() {
       this.sponsorsList = await fireDb.getSponsors()

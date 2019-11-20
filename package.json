@@ -25,6 +25,7 @@
     "firebase": "latest",
     "firebaseui": "^4.2.0",
     "firestore": "^1.1.6",
+    "json2csv": "^4.5.4",
     "nuxt": "^2.10.0",
     "nuxt-buefy": "^0.3.16",
     "vue": "latest",
