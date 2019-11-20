@@ -61,9 +61,6 @@ export default {
       this.buttonState = 'is-loading'
       this.provider = new firebase.auth.GoogleAuthProvider()
       try {
-        await firebase
-          .auth()
-          .setPersistence(firebase.auth.Auth.Persistence.SESSION)
         const res = await auth.signInWithPopup(this.provider)
         this.honk()
         setTimeout(this.honk, 450)
