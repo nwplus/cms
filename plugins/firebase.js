@@ -22,7 +22,6 @@ if (!firebase.apps.length) {
 
 export const auth = firebase.auth()
 export const analytics = firebase.analytics()
-auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
 
 const db = firebase.firestore()
 const storage = firebase.storage()
@@ -90,6 +89,7 @@ const fireDb = {
         introLastEditedDate: websiteData.IntroLastEditedDate || undefined,
         introButtonEnabled: websiteData.IntroButtonEnabled,
         introButtonLink: websiteData.IntroButtonLink,
+        introSignUpButtonText: websiteData.SignUpButtonText,
         introSignUpText: websiteData.SignUpText
       }
     }
@@ -176,6 +176,7 @@ const fireDb = {
     date,
     enabled = undefined,
     signupLink = undefined,
+    signupButtonText = undefined,
     signupText = undefined
   ) => {
     const ref = db.collection(webCollection).doc(website)
@@ -186,6 +187,7 @@ const fireDb = {
       IntroLastEditedDate: date,
       IntroButtonEnabled: enabled || false,
       IntroButtonLink: signupLink || '',
+      SignUpButtonText: signupButtonText || '',
       SignUpText: signupText || ''
     })
   },
