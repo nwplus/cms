@@ -24,6 +24,10 @@
           Sign up button link: {{ introTexts[selectedWebsite].introButtonLink }}
         </p>
         <p>
+          Sign up button text (on the button):
+          {{ introTexts[selectedWebsite].introSignUpButtonText }}
+        </p>
+        <p>
           Sign up text (under the buttons):
           {{ introTexts[selectedWebsite].introSignUpText }}
         </p>
@@ -68,6 +72,11 @@
         <p>Sign up button link</p>
         <textarea
           v-model="introTexts[selectedWebsite].introButtonLink"
+          class="intro-input"
+        />
+        <p>Sign up button text (on the button)</p>
+        <textarea
+          v-model="introTexts[selectedWebsite].introSignUpButtonText"
           class="intro-input"
         />
         <p>Sign up text (under the buttons</p>
@@ -154,6 +163,7 @@ export default {
         this.introTexts[this.selectedWebsite].introLastEditedDate,
         this.introTexts[this.selectedWebsite].introButtonEnabled,
         this.introTexts[this.selectedWebsite].introButtonLink,
+        this.introTexts[this.selectedWebsite].introSignUpButtonText,
         this.introTexts[this.selectedWebsite].introSignUpText
       )
       this.stopEditingIntro()
