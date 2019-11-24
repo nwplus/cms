@@ -109,6 +109,17 @@ export default {
       applicantCount: 0
     }
   },
+  computed: {
+    selectedWebsite: {
+      get() {
+        const selectedSite = this.$store.state.selectedWebsite
+        return selectedSite && this.websites.includes(selectedSite) ? selectedSite : this.websites[0]
+      },
+      set(newValue) {
+        this.$store.commit('setWebsite', newValue)
+      }
+    }
+  },
   async asyncData({ redirect }) {
     auth.onAuthStateChanged(async function(user) {
       if (!user) {
@@ -120,13 +131,11 @@ export default {
     const introTexts = await fireDb.getIntroText()
     const events = await fireDb.getEvents()
     const flags = await fireDb.getFlags()
-    const selectedWebsite = listOfWebsites[0]
     const sponsorsList = await fireDb.getSponsors()
     return {
       websites: listOfWebsites,
       introTexts: introTexts,
       events: events,
-      selectedWebsite: selectedWebsite,
       files: [],
       faq: [],
       featureFlags: flags,
