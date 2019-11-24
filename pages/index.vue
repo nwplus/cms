@@ -47,15 +47,6 @@ export default {
       buttonState: ''
     }
   },
-  asyncData({ redirect }) {
-    auth.onAuthStateChanged(async function(user) {
-      if (user && (await fireDb.isAdmin(user.email))) {
-        redirect('/cms')
-      } else if (user) {
-        redirect('/signUp')
-      }
-    })
-  },
   methods: {
     async googleSignIn() {
       this.buttonState = 'is-loading'

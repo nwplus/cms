@@ -27,6 +27,9 @@ export default {
   /*
    ** Headers of the page
    */
+  router: {
+    middleware: 'auth'
+  },
   head: {
     title: 'nwPlus CMS',
     meta: [

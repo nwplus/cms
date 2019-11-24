@@ -94,7 +94,6 @@
 /* eslint-disable no-console,import/no-duplicates,prettier/prettier */
 import firebase from 'firebase'
 import Events from '../components/Events'
-import { auth } from '~/plugins/firebase'
 import fireDb from '~/plugins/firebase'
 import Faq from '~/components/FAQ.vue'
 import IntroText from '~/components/IntroText'
@@ -128,12 +127,6 @@ export default {
     }
   },
   async asyncData({ redirect }) {
-    auth.onAuthStateChanged(async function(user) {
-      if (!user) {
-        redirect('/')
-      }
-      if (!(await fireDb.isAdmin(user.email))) redirect('/')
-    })
     const listOfWebsites = await fireDb.getWebsites()
     const introTexts = await fireDb.getIntroText()
     const events = await fireDb.getEvents()
