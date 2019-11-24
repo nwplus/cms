@@ -40,6 +40,9 @@
       <button
         v-for="w in websites"
         :key="w.key"
+        class="button is-small"
+        :class="selectedWebsite === w ? 'is-primary is-focused' : 'is-link'"
+        style="margin: 0 1%;"
         :value="w"
         @click="changeWebsite($event)"
       >
@@ -51,7 +54,11 @@
       style="margin-top:1%;"
       class="has-text-centered"
     >
-      <button class="button is-two-thirds is-info" @click="getApplicantCsv">
+      <button
+        :style="{ width: '20%' }"
+        class="button is-info is-small is-rounded"
+        @click="getApplicantCsv"
+      >
         Download Applicants CSV
       </button>
     </div>
@@ -87,7 +94,6 @@
 /* eslint-disable no-console,import/no-duplicates,prettier/prettier */
 import firebase from 'firebase'
 import Events from '../components/Events'
-import { auth } from '~/plugins/firebase'
 import fireDb from '~/plugins/firebase'
 import Faq from '~/components/FAQ.vue'
 import IntroText from '~/components/IntroText'
@@ -109,24 +115,27 @@ export default {
       applicantCount: 0
     }
   },
-  async asyncData({ redirect }) {
-    auth.onAuthStateChanged(async function(user) {
-      if (!user) {
-        redirect('/')
+  computed: {
+    selectedWebsite: {
+      get() {
+        const selectedSite = this.$store.state.selectedWebsite
+        return selectedSite && this.websites.includes(selectedSite) ? selectedSite : this.websites[0]
+      },
+      set(newValue) {
+        this.$store.commit('setWebsite', newValue)
       }
-      if (!(await fireDb.isAdmin(user.email))) redirect('/')
-    })
+    }
+  },
+  async asyncData({ redirect }) {
     const listOfWebsites = await fireDb.getWebsites()
     const introTexts = await fireDb.getIntroText()
     const events = await fireDb.getEvents()
     const flags = await fireDb.getFlags()
-    const selectedWebsite = listOfWebsites[0]
     const sponsorsList = await fireDb.getSponsors()
     return {
       websites: listOfWebsites,
       introTexts: introTexts,
       events: events,
-      selectedWebsite: selectedWebsite,
       files: [],
       faq: [],
       featureFlags: flags,

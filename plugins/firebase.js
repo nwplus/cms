@@ -89,6 +89,7 @@ const fireDb = {
         introLastEditedDate: websiteData.IntroLastEditedDate || undefined,
         introButtonEnabled: websiteData.IntroButtonEnabled,
         introButtonLink: websiteData.IntroButtonLink,
+        introSignUpButtonText: websiteData.SignUpButtonText,
         introSignUpText: websiteData.SignUpText
       }
     }
@@ -175,6 +176,7 @@ const fireDb = {
     date,
     enabled = undefined,
     signupLink = undefined,
+    signupButtonText = undefined,
     signupText = undefined
   ) => {
     const ref = db.collection(webCollection).doc(website)
@@ -185,6 +187,7 @@ const fireDb = {
       IntroLastEditedDate: date,
       IntroButtonEnabled: enabled || false,
       IntroButtonLink: signupLink || '',
+      SignUpButtonText: signupButtonText || '',
       SignUpText: signupText || ''
     })
   },

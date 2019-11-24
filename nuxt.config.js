@@ -27,6 +27,9 @@ export default {
   /*
    ** Headers of the page
    */
+  router: {
+    middleware: 'auth'
+  },
   head: {
     title: 'nwPlus CMS',
     meta: [
@@ -48,7 +51,11 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/darkmode.js', '~/plugins/Honk.js'],
+  plugins: [
+    '~/plugins/darkmode.js',
+    '~/plugins/Honk.js',
+    { src: '~/plugins/vuex-persist', srr: false }
+  ],
   /*
    ** Nuxt.js modules
    */

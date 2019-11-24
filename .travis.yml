@@ -9,6 +9,16 @@ jobs:
   include:
     - stage: "Lint, Test and Build"
     - script: npm run lint && npm run test && npm run generate
+    - stage: "Staging"
+    - script: yarn generate
+      deploy:
+        provider: firebase
+        skip_cleanup: true
+        token:
+          secure: $FIREBASE_TOKEN
+        project: "nwhacks-2019-dev"
+        on:
+          branch: dev
     - stage: Deploy
       script: npm run generate:prod && echo "cms.nwplus.io" >> dist/CNAME
       deploy:
