@@ -41,7 +41,7 @@
         v-for="w in websites"
         :key="w.key"
         class="button is-small"
-        :class="selectedWebsite === w ? 'is-primary' : 'is-link'"
+        :class="selectedWebsite === w ? 'is-primary is-focused' : 'is-link'"
         style="margin: 0 1%;"
         :value="w"
         @click="changeWebsite($event)"
@@ -54,7 +54,11 @@
       style="margin-top:1%;"
       class="has-text-centered"
     >
-      <button class="button is-two-thirds is-info" @click="getApplicantCsv">
+      <button
+        :style="{ width: '20%' }"
+        class="button is-info is-small is-rounded"
+        @click="getApplicantCsv"
+      >
         Download Applicants CSV
       </button>
     </div>
