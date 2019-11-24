@@ -4,13 +4,6 @@
       `hero sponsor-page is-fullheight ${darkmodeText} ${darkmodeBackground}`
     "
   >
-    <div id="applicantNumber" :class="`${darkmodeText}`">
-      <div style="margin-top: 10%; display: inline-block;">
-        <span style="margin: auto; top: 20%;">
-          nwHacks Applicants: {{ applicantCount }}
-        </span>
-      </div>
-    </div>
     <div style="display: flex;">
       <darkmodeToggle />
       <button @click="logout">Logout</button>
@@ -61,6 +54,13 @@
       >
         Download Applicants CSV
       </button>
+    </div>
+    <div id="applicantNumber" :class="`${darkmodeText}`">
+      <div id="applicantNumberContainer" style="display: inline-block;">
+        <p style="margin: auto; top: 20%;">
+          nwHacks Applicants: {{ applicantCount }}
+        </p>
+      </div>
     </div>
     <hr />
     <Flags :flags="featureFlags[selectedWebsite]" :website="selectedWebsite" />
@@ -218,9 +218,14 @@ export default {
   width: 25vw;
   text-align: center;
   @include until($tablet) {
-    width: 15vw;
-    right: 5%;
-    top: 2%;
+    position: relative;
+    width: auto;
+  }
+}
+#applicantNumberContainer{
+  margin-top: 10%;
+  @include until($tablet){
+    margin-top: 5%;
   }
 }
 input[type='file'] {
