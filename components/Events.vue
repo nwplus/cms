@@ -54,11 +54,10 @@
     <div id="events-header">
       <button @click="add_event">Add Event</button>
     </div>
-    <table id="events-body">
+    <table id="events-body " :class="`table ${darkmodeBackground}`">
       <thead>
         <tr>
           <th :class="darkmodeText">Event</th>
-          <th :class="darkmodeText">Enabled</th>
           <th :class="darkmodeText">Last Modified</th>
           <th :class="darkmodeText" colspan="3">
             Actions
@@ -67,21 +66,23 @@
       </thead>
       <tbody>
         <tr v-for="(e, index) of events[selectedWebsite]" :key="e.key">
-          <td>{{ e.title }}</td>
-          <td>
-            <input
-              v-model="e.enabled"
-              type="checkbox"
-              @change="updated_enabled(index)"
-            />
-          </td>
-          <td v-if="e.eventLastEditedBy && e.eventLastEditedDate">
+          <td :class="darkmodeText">{{ e.title }}</td>
+          <td
+            v-if="e.eventLastEditedBy && e.eventLastEditedDate"
+            :class="darkmodeText"
+          >
             {{ e.eventLastEditedDate }} by {{ e.eventLastEditedBy }}
           </td>
-          <td v-else>Never Modified</td>
-          <td><button @click="view_event(index)">View</button></td>
-          <td><button @click="edit_event(index)">Edit</button></td>
-          <td><button @click="delete_event(index)">Delete</button></td>
+          <td v-else :class="darkmodeText">Never Modified</td>
+          <td :class="darkmodeText">
+            <button @click="view_event(index)">View</button>
+          </td>
+          <td :class="darkmodeText">
+            <button @click="edit_event(index)">Edit</button>
+          </td>
+          <td :class="darkmodeText">
+            <button @click="delete_event(index)">Delete</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -220,18 +221,12 @@ export default {
       this.index = undefined
       this.editing = false
       window.location.reload(true)
-    },
-    async updated_enabled(index) {
-      await fireDb.updateEventEnabled(this.selectedWebsite, {
-        id: this.events[this.selectedWebsite][index].id,
-        enabled: this.events[this.selectedWebsite][index].enabled
-      })
     }
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 #events {
   width: 100%;
 }
