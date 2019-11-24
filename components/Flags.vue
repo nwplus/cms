@@ -75,6 +75,6 @@ export default {
 
 }
 .flags > p {
-  padding-right: 1%;
+  padding-right: 1vw;
 }
 </style>

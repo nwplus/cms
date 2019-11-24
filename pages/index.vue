@@ -33,7 +33,6 @@
 </template>
 
 <script>
-/* eslint-disable no-console */
 import firebase from 'firebase/app'
 import fireDb, { auth, analytics } from '../plugins/firebase'
 import darkmodeToggle from '~/components/DarkmodeToggle.vue'

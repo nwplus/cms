@@ -234,7 +234,7 @@ export default {
 
 <style scoped lang="scss">
 #events {
-  width: 100%;
+  width: 90vw;
 }
 
 #events-header {
