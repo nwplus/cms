@@ -50,7 +50,13 @@
       <p>Image Link: {{ imageLink }}</p>
     </b-modal>
     <p :class="`title is-4 ${darkmodeText}`">Events</p>
-
+    <div v-if="selectedWebsite === 'LHD_2020'">
+      <p :class="darkmodeText">
+        To disable a button, remove its link. Adding a link will re-enable the
+        button.
+      </p>
+      <br />
+    </div>
     <div id="events-header">
       <button @click="add_event">Add Event</button>
     </div>
