@@ -40,6 +40,9 @@
       <button
         v-for="w in websites"
         :key="w.key"
+        class="button is-small"
+        :class="selectedWebsite === w ? 'is-primary' : 'is-link'"
+        style="margin: 0 1%;"
         :value="w"
         @click="changeWebsite($event)"
       >
