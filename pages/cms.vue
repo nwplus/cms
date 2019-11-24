@@ -1,9 +1,5 @@
 <template>
-  <div
-    :class="
-      `hero sponsor-page is-fullheight ${darkmodeText} ${darkmodeBackground}`
-    "
-  >
+  <div :class="`cms hero is-fullheight ${darkmodeText} ${darkmodeBackground}`">
     <div style="display: flex;">
       <darkmodeToggle />
       <button @click="logout">Logout</button>
@@ -48,7 +44,7 @@
       class="has-text-centered"
     >
       <button
-        :style="{ width: '20%' }"
+        :style="{ width: '15vw', minWidth: '180px' }"
         class="button is-info is-small is-rounded"
         @click="getApplicantCsv"
       >
@@ -63,14 +59,20 @@
       </div>
     </div>
     <hr />
-    <Flags :flags="featureFlags[selectedWebsite]" :website="selectedWebsite" />
+    <Flags
+      class="indented"
+      :flags="featureFlags[selectedWebsite]"
+      :website="selectedWebsite"
+    />
     <hr />
     <IntroText
+      class="indented"
       :originalIntroTexts="introTexts"
       :selectedWebsite="selectedWebsite"
     ></IntroText>
     <hr />
     <Sponsors
+      class="indented"
       :websites="websites"
       :selected-website="selectedWebsite"
       :sponsors="sponsorsList"
@@ -78,11 +80,13 @@
     ></Sponsors>
     <hr />
     <Events
+      class="indented"
       :selectedWebsite="selectedWebsite"
       :originalEvents="events"
     ></Events>
     <hr />
     <Faq
+      class="indented"
       :website="selectedWebsite"
       :listOfFaq="faq"
       @refreshData="refreshData(selectedWebsite)"
@@ -241,5 +245,8 @@ input[type='file'] {
 }
 .title {
   font-size: 20px;
+}
+.indented {
+  margin-left: 1.5%;
 }
 </style>

@@ -191,6 +191,17 @@ export default {
 }
 </script>
 
+<style scoped lang="scss">
+@import '~bulma/sass/utilities/_all';
+.sponsortable {
+  max-width: 70vw;
+  @include until($tablet) {
+    width: 90vw;
+    max-width: 90vw;
+  }
+}
+</style>
+
 <style scoped>
 input[type='file'] {
   position: absolute;
@@ -218,10 +229,6 @@ input[type='file'] {
   color: red;
   cursor: pointer;
 }
-
-.sponsortable {
-  width: 80%;
-}
 table td,
 table th {
   vertical-align: middle;
@@ -236,7 +243,7 @@ table th:not([align]) {
   background-color: white;
 }
 .sponsors {
-  height: 350px;
+  max-height: 50vh;
   overflow-y: auto;
 }
 </style>
