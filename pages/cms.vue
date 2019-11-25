@@ -157,7 +157,6 @@ export default {
   },
   methods: {
     setApplicantNumber(snapshot) {
-      console.log(snapshot)
       this.applicantCount = snapshot.docs.length
     },
     async getApplicantCsv() {
