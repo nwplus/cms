@@ -1,8 +1,16 @@
 <template>
   <div :class="`cms hero is-fullheight ${darkmodeText} ${darkmodeBackground}`">
-    <div style="display: flex;">
-      <darkmodeToggle />
-      <button @click="logout">Logout</button>
+    <div style="display: flex; width: 120px">
+      <button style="margin: auto;" class="button is-small is-rounded is-info">
+        <darkmodeToggle />
+      </button>
+      <button
+        style="margin: auto;"
+        class="button is-small is-danger"
+        @click="logout"
+      >
+        Logout
+      </button>
     </div>
     <div class="container has-text-centered">
       <div class="level">
