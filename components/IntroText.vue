@@ -193,7 +193,7 @@ export default {
 }
 
 #intro {
-  width: 100%;
+  width: 90vw;
 }
 
 .intro-body {
