@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import fireDb, { auth } from '~/plugins/firebase'
 export default function({ redirect, route, store }) {
-  if (route.path !== '/cms') {
+  if (!route.path.includes('/cms')) {
     if (store.state.loggedIn) {
       redirect('/cms')
     }
@@ -14,11 +14,11 @@ export default function({ redirect, route, store }) {
       } else {
         store.commit('logout')
       }
-      if (route.path !== '/cms') {
+      if (!route.path.includes('/cms')) {
         if (user && isAdmin) {
           redirect('/cms')
         }
-      } else if (route.path !== '/signUp' && !isAdmin) {
+      } else if (!route.path.includes('/signUp') && !isAdmin) {
         redirect('/signUp')
       }
     } else if (route.path !== '/') {
