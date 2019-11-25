@@ -17,8 +17,11 @@ const envVars =
       }
     : {
         env: {
-          signUpUrl:
-            'https://us-central1-nwhacks-2019-dev.cloudfunctions.net/newAdmin/'
+          FIREBASE_API_KEY: 'AIzaSyBppAYPBZ6WxWdErM3smh6t9BEJPUM_NHU',
+          FIREBASE_AUTH_DOMAIN: 'nwhacks-2019-dev.firebaseapp.com',
+          FIREBASE_DATABASE_URL: 'https://nwhacks-2019-dev.firebaseio.com',
+          FIREBASE_PROJECT_ID: 'nwhacks-2019-dev',
+          FIREBASE_STORAGE_BUCKET: 'nwhacks-2019-dev-sponsor-images'
         }
       }
 export default {

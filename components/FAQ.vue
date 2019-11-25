@@ -15,7 +15,7 @@
       <div :class="`table-container`">
         <table
           :class="
-            `table is-fullwidth is-scrollable has-background-black ${darkmodeText}`
+            `table is-fullwidth is-scrollable ${darkmodeBackground} ${darkmodeText}`
           "
         >
           <thead>

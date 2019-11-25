@@ -1,10 +1,17 @@
 <template>
   <div>
     <section :class="`hero ${darkmodeBackground} is-fullheight`">
+      <div style="display: flex; width: 120px">
+        <darkmodeToggle />
+        <button
+          style="margin: auto;"
+          class="button is-small is-danger"
+          @click="logout"
+        >
+          Logout
+        </button>
+      </div>
       <div :class="`centered ${darkmodeText} container`">
-        <div style="position: absolute; left: 0%; top: 0%;">
-          <darkmodeToggle />
-        </div>
         <p :class="`title ${darkmodeText}`">
           You are not an admin! <br />
           If you work for nwPlus, please enter the password here
@@ -72,6 +79,14 @@ export default {
       } catch (e) {
         this.loadState = ''
         alert('incorrect password')
+      }
+    },
+    async logout() {
+      try {
+        await auth.signOut()
+        this.$router.push('/')
+      } catch (error) {
+        alert(error)
       }
     }
   }

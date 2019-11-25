@@ -1,8 +1,14 @@
 <template>
   <div class="toggleBotton">
-    <div @click="switchMode">
-      {{ darkmode ? `🌞` : '🌙' }}
-    </div>
+    <button
+      style="margin: auto;"
+      class="button is-small is-rounded is-info"
+      @click="switchMode"
+    >
+      <div>
+        {{ darkmode ? `🌞` : '🌙' }}
+      </div>
+    </button>
   </div>
 </template>
 <script>
