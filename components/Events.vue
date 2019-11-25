@@ -60,7 +60,7 @@
     <div id="events-header">
       <button @click="add_event">Add Event</button>
     </div>
-    <table id="events-body " :class="`table ${darkmodeBackground}`">
+    <table id="events-body" :class="`table ${darkmodeBackground}`">
       <thead>
         <tr>
           <th :class="darkmodeText">Event</th>
@@ -243,6 +243,7 @@ export default {
 
 #events-body {
   display: block;
+  overflow-x: scroll;
 }
 
 .field {
