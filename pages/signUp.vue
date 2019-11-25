@@ -2,12 +2,7 @@
   <div>
     <section :class="`hero ${darkmodeBackground} is-fullheight`">
       <div style="display: flex; width: 120px">
-        <button
-          style="margin: auto;"
-          class="button is-small is-rounded is-info"
-        >
-          <darkmodeToggle />
-        </button>
+        <darkmodeToggle />
         <button
           style="margin: auto;"
           class="button is-small is-danger"

@@ -2,12 +2,12 @@
   <div>
     <section :class="`hero centered is-fullheight ${darkmodeBackground}`">
       <div style="position: absolute; top: 0%; user-select: none">
+        <darkmodeToggle />
+
         <button
           style="margin: auto;"
           class="button is-small is-rounded is-info"
-        >
-          <darkmodeToggle />
-        </button>
+        ></button>
       </div>
       <div class="container has-text-centered">
         <div class="level">
