@@ -71,7 +71,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(e, index) of events[selectedWebsite]" :key="e.key">
+        <tr v-for="(e, i) of events[selectedWebsite]" :key="e.key">
           <td :class="darkmodeText">{{ e.title }}</td>
           <td
             v-if="e.eventLastEditedBy && e.eventLastEditedDate"
@@ -81,13 +81,13 @@
           </td>
           <td v-else :class="darkmodeText">Never Modified</td>
           <td :class="darkmodeText">
-            <button @click="view_event(index)">View</button>
+            <button @click="view_event(i)">View</button>
           </td>
           <td :class="darkmodeText">
-            <button @click="edit_event(index)">Edit</button>
+            <button @click="edit_event(i)">Edit</button>
           </td>
           <td :class="darkmodeText">
-            <button @click="delete_event(index)">Delete</button>
+            <button @click="delete_event(i)">Delete</button>
           </td>
         </tr>
       </tbody>
