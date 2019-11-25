@@ -50,6 +50,7 @@ export default {
    ** Customize the progress-bar color
    */
   loading: '~/components/loading.vue',
+  loadingIndicator: '~/components/loading.html',
   css: [{ src: 'bulma/bulma.sass', lang: 'sass' }],
   /*
    ** Plugins to load before mounting the App
