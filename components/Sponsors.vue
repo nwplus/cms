@@ -90,7 +90,7 @@
         >
           upload
         </button>
-        <p v-else>{{ `alt${file.name}` }}</p>
+        <p v-else>{{ file.altImage.name }}</p>
         <input
           :ref="`${key}files`"
           type="file"
