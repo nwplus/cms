@@ -35,13 +35,22 @@ const honkify = (elementToHonkify = false) => {
   return dehonk
 }
 Vue.mixin({
+  computed: {
+    honking() {
+      return this.$store.state.honk
+    }
+  },
   mounted() {
-    const elementList = document.querySelectorAll('button')
-    honkify(elementList)
+    if (this.honking) {
+      const elementList = document.querySelectorAll('button')
+      honkify(elementList)
+    }
   },
   updated() {
-    const elementList = document.querySelectorAll('button')
-    honkify(elementList)
+    if (this.honking) {
+      const elementList = document.querySelectorAll('button')
+      honkify(elementList)
+    }
   },
   methods: {
     honk() {
