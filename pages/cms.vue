@@ -2,6 +2,7 @@
   <div :class="`cms hero is-fullheight ${darkmodeText} ${darkmodeBackground}`">
     <div style="display: flex; width: 120px">
       <darkmodeToggle />
+      <honkToggle />
       <button
         style="margin: auto;"
         class="button is-small is-danger"
@@ -110,7 +111,7 @@ import IntroText from '~/components/IntroText'
 import Sponsors from '~/components/Sponsors'
 import darkmodeToggle from '~/components/DarkmodeToggle'
 import Flags from '~/components/Flags'
-
+import honkToggle from '~/components/honkToggle'
 export default {
   components: {
     Events,
@@ -118,7 +119,8 @@ export default {
     IntroText,
     Sponsors,
     Faq,
-    Flags
+    Flags,
+    honkToggle
   },
   data() {
     return {

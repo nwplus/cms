@@ -1,7 +1,8 @@
 export const state = () => ({
   darkmode: true,
   selectedWebsite: '',
-  loggedIn: false
+  loggedIn: false,
+  honk: true
 })
 
 export const mutations = {
@@ -16,5 +17,8 @@ export const mutations = {
   },
   logout(state) {
     state.loggedIn = false
+  },
+  toggleHonk(state) {
+    state.honk = !state.honk
   }
 }
