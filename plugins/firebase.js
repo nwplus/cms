@@ -200,10 +200,12 @@ const fireDb = {
       image: sponsor.image,
       name: sponsor.name,
       url: sponsor.url,
-      rank: sponsor.rank
+      rank: sponsor.rank,
+      altImage: sponsor.altImage
     })
   },
   async deleteSponsor(website, image) {
+    let altImage = false
     try {
       const sponsors = await db
         .collection(webCollection)
@@ -212,6 +214,7 @@ const fireDb = {
         .get()
       sponsors.forEach(async sponsor => {
         if (sponsor.data().image === image) {
+          altImage = !!sponsor.data().altImage
           await sponsor.ref.delete()
         }
       })
@@ -220,6 +223,10 @@ const fireDb = {
     }
     const ref = storage.ref(`${website}/${image}`)
     await ref.delete()
+    if (altImage) {
+      const altRef = storage.ref(`${website}/alt${image}`)
+      await altRef.delete()
+    }
     return true
   },
   async uploadImages(website, files) {
@@ -228,6 +235,10 @@ const fireDb = {
       try {
         const ref = storage.ref(`${website}/${file.name}`)
         await ref.put(file)
+        if (file.altImage) {
+          const altRef = storage.ref(`${website}/alt${file.name}`)
+          await altRef.put(file.altImage)
+        }
       } catch (e) {
         console.log(e)
         failedUploads.push(file.name)
@@ -238,11 +249,16 @@ const fireDb = {
           image: file.name,
           name: file.sponsorName.trim(),
           url: file.url.trim(),
-          rank: file.rank
+          rank: file.rank,
+          altImage: file.altImage ? `alt${file.name}` : null
         })
       } catch (e) {
         const ref = storage.ref(`${website}/${file.name}`)
         await ref.delete()
+        if (file.altImage) {
+          const altRef = storage.ref(`${website}/alt${file.name}`)
+          await altRef.delete()
+        }
         console.log(e)
         failedUploads.push(file.name)
       }
@@ -261,6 +277,12 @@ const fireDb = {
               website,
               sponsor.data.image
             )
+            if (sponsor.data.altImage) {
+              sponsor.data.altImageUrl = await fireDb.getImageUrl(
+                website,
+                sponsor.data.altImage
+              )
+            }
           })
         )
         sponsors[website] = data
