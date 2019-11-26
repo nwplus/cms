@@ -13,6 +13,7 @@
               <th :class="darkmodeText">Sponsor</th>
               <th :class="darkmodeText">URL</th>
               <th :class="darkmodeText">Type</th>
+              <th :class="darkmodeText">Alt Image</th>
               <th :class="darkmodeText">Delete</th>
             </tr>
           </thead>
@@ -32,6 +33,12 @@
             </td>
             <td>
               {{ sponsor.data.rank }}
+            </td>
+            <td :class="{ sponsorImage: sponsor.data.altImage }">
+              <img
+                v-if="sponsor.data.altImage"
+                :src="sponsor.data.altImageUrl"
+              />
             </td>
             <td>
               <button
@@ -69,10 +76,26 @@
         <p>Sponsor Url:</p>
         <input v-model="file.url" />
         <p>Rank:</p>
-        <div v-for="(rank, rankKey) in ranks" :key="rankKey">
-          <input v-model="file.rank" :name="key" type="radio" :value="rank" />
-          {{ rank }}
-        </div>
+        <select v-model="file.rank" class="select">
+          <option v-for="(rank, rankKey) in ranks" :key="rankKey">
+            {{ rank }}
+          </option>
+        </select>
+        <p>Alt Image:</p>
+        <button
+          v-if="!file.altImage"
+          style="margin: 0 1%;"
+          class="button is-small is-info"
+          @click="$refs[`${key}files`][0].click()"
+        >
+          upload
+        </button>
+        <p v-else>{{ `alt${file.name}` }}</p>
+        <input
+          :ref="`${key}files`"
+          type="file"
+          @change="handleAltImageUpload(key)"
+        />
         <p class="remove-file" @click="removeFile(key)">Remove</p>
         <!-- {{ files }} uncomment to debug -->
       </div>
@@ -119,8 +142,7 @@ export default {
   data() {
     return {
       ranks: ['kilo', 'mega', 'giga', 'tera', 'in-kind'],
-      files: [],
-      selectedRank: ''
+      files: []
     }
   },
   methods: {
@@ -159,8 +181,15 @@ export default {
         uploadedFiles[i].sponsorName = ''
         uploadedFiles[i].url = ''
         uploadedFiles[i].rank = ''
+        uploadedFiles[i].altImage = null
         this.files.push(uploadedFiles[i])
       }
+    },
+    handleAltImageUpload(key) {
+      const image = this.$refs[`${key}files`][0].files[0]
+      const file = this.files[key]
+      file.altImage = image
+      this.files.splice(key, 1, file)
       console.log(this.files)
     },
     async save() {
