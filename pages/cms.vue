@@ -57,6 +57,14 @@
       >
         Download Applicants CSV
       </button>
+      <a href="https://assesment.nwplus.io/" target="_blank" rel="noopener">
+        <button
+          :style="{ width: '15vw', minWidth: '180px' }"
+          class="button is-success is-small is-rounded"
+        >
+          Applicant Assessment
+        </button>
+      </a>
     </div>
     <div id="applicantNumber" :class="`${darkmodeText}`">
       <div id="applicantNumberContainer" style="display: inline-block;">
