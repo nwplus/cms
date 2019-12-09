@@ -70,6 +70,8 @@
       <div id="applicantNumberContainer" style="display: inline-block;">
         <p style="margin: auto; top: 20%;">
           nwHacks Applicants: {{ applicantCount }}
+          <br />
+          nwHacks Accepted: {{ acceptedCount }}
         </p>
       </div>
     </div>
@@ -132,7 +134,8 @@ export default {
   },
   data() {
     return {
-      applicantCount: 0
+      applicantCount: 0,
+      acceptedCount: 0
     }
   },
   computed: {
@@ -168,6 +171,7 @@ export default {
   methods: {
     setApplicantNumber(snapshot) {
       this.applicantCount = snapshot.docs.length
+      this.acceptedCount = snapshot.docs.filter(doc => doc.data().tags && doc.data().tags.accepted).length
     },
     async getApplicantCsv() {
       const csv = await fireDb.applicantToCSV()
