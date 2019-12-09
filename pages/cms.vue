@@ -167,11 +167,14 @@ export default {
   },
   mounted() {
     fireDb.getNumberOfApplicants(this.setApplicantNumber)
+    fireDb.getNumberOfAccepted(this.setAcceptedCount)
   },
   methods: {
     setApplicantNumber(snapshot) {
       this.applicantCount = snapshot.docs.length
-      this.acceptedCount = snapshot.docs.filter(doc => doc.data().tags && doc.data().tags.accepted).length
+    },
+    setAcceptedCount(snapshot) {
+      this.acceptedCount = snapshot.docs.length
     },
     async getApplicantCsv() {
       const csv = await fireDb.applicantToCSV()
