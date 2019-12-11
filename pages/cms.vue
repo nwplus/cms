@@ -69,8 +69,6 @@
     <div id="applicantNumber" :class="`${darkmodeText}`">
       <div id="applicantNumberContainer" style="display: inline-block;">
         <p style="margin: auto; top: 20%;">
-          nwHacks Applicants: {{ applicantCount }}
-          <br />
           nwHacks scored: {{ scoredCount }}/{{ applicantCount }}
           <br />
           nwHacks Accepted: {{ acceptedCount }}
