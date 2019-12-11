@@ -71,6 +71,8 @@
         <p style="margin: auto; top: 20%;">
           nwHacks Applicants: {{ applicantCount }}
           <br />
+          nwHacks scored: {{ scoredCount }}/{{ applicantCount }}
+          <br />
           nwHacks Accepted: {{ acceptedCount }}
         </p>
       </div>
@@ -135,7 +137,8 @@ export default {
   data() {
     return {
       applicantCount: 0,
-      acceptedCount: 0
+      acceptedCount: 0,
+      scoredCount: 0
     }
   },
   computed: {
@@ -168,6 +171,7 @@ export default {
   mounted() {
     fireDb.getNumberOfApplicants(this.setApplicantNumber)
     fireDb.getNumberOfAccepted(this.setAcceptedCount)
+    fireDb.getScored(this.setScoredCount)
   },
   methods: {
     setApplicantNumber(snapshot) {
@@ -175,6 +179,10 @@ export default {
     },
     setAcceptedCount(snapshot) {
       this.acceptedCount = snapshot.docs.length
+    },
+    setScoredCount(snapshot) {
+      console.log(snapshot.docs)
+      this.scoredCount = snapshot.docs.length
     },
     async getApplicantCsv() {
       const csv = await fireDb.applicantToCSV()
@@ -237,11 +245,9 @@ export default {
 <style lang="scss" scoped>
 @import "~bulma/sass/utilities/_all";
 #applicantNumber {
-  position: absolute;
-  right: 0.5%;
   font-size: 1.5em;
   height: 20%;
-  width: 25vw;
+  margin: auto;
   text-align: center;
   @include until($tablet) {
     position: relative;
