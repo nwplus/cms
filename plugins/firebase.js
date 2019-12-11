@@ -36,6 +36,11 @@ const fireDb = {
       .where('tags.accepted', '==', true)
       .onSnapshot(callback)
   },
+  getScored: callback => {
+    db.collection('hacker_info_2020')
+      .where('score.finalScore', '>', -1)
+      .onSnapshot(callback)
+  },
   applicantToCSV: async _ => {
     const hackerReference = db.collection('hacker_info_2020')
     const snapshot = await hackerReference.get()
