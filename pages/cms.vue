@@ -66,15 +66,6 @@
         </button>
       </a>
     </div>
-    <div id="applicantNumber" :class="`${darkmodeText}`">
-      <div id="applicantNumberContainer" style="display: inline-block;">
-        <p style="margin: auto; top: 20%;">
-          nwHacks scored: {{ scoredCount }}/{{ applicantCount }}
-          <br />
-          nwHacks Accepted: {{ acceptedCount }}
-        </p>
-      </div>
-    </div>
     <hr />
     <Flags
       class="indented"
@@ -166,22 +157,7 @@ export default {
       sponsorsList
     }
   },
-  mounted() {
-    fireDb.getNumberOfApplicants(this.setApplicantNumber)
-    fireDb.getNumberOfAccepted(this.setAcceptedCount)
-    fireDb.getScored(this.setScoredCount)
-  },
   methods: {
-    setApplicantNumber(snapshot) {
-      this.applicantCount = snapshot.docs.length
-    },
-    setAcceptedCount(snapshot) {
-      this.acceptedCount = snapshot.docs.length
-    },
-    setScoredCount(snapshot) {
-      console.log(snapshot.docs)
-      this.scoredCount = snapshot.docs.length
-    },
     async getApplicantCsv() {
       const csv = await fireDb.applicantToCSV()
       const blob = new Blob([csv], {
