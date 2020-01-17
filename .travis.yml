@@ -1,6 +1,8 @@
 language: node_js
 node_js:
   - 10.15.3
+os:
+  - osx
 notifications:
   email: false
 install:
@@ -10,7 +12,7 @@ jobs:
     - stage: "Lint, Test and Build"
     - script: npm run lint && npm run test && npm run generate
     - stage: "Staging"
-    - script: yarn generate
+    - script: npm run generate
       deploy:
         provider: firebase
         skip_cleanup: true
