@@ -31,7 +31,8 @@
     "vue": "latest",
     "vue-dynamic-select": "^1.0.16",
     "vue-loading-overlay": "^3.2.0",
-    "vuex-persist": "^2.2.0"
+    "vuex-persist": "^2.2.0",
+    "core-js": "^2.6.5"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^0.0.1",
